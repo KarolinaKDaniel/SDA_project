@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import TextField, IntegerField, CharField, Model, ForeignKey, CASCADE, ImageField
+from django.db.models import TextField, IntegerField, CharField, Model, ForeignKey, CASCADE, ImageField, ManyToManyField, OneToOneField
+from
 
 
 class MyUser(User):
@@ -15,3 +16,8 @@ class Doctor(Model):
     credential_id = CharField(max_length=128)
     photo = ImageField(blank=True, null=True)
 
+
+class Patient(Model):
+    doctor = ManyToManyField(Doctor)
+    my_user = OneToOneField(MyUser)
+    affliction = ManyToManyField()
