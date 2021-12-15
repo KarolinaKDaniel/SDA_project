@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ImageField
+from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ImageField, \
+    JSONField
 
 
 class Alert(Model):
@@ -32,7 +33,7 @@ class Affliction(Model):
 class Medicine(Model):
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
-    doses = CharField(max_length=128)
+    doses = JSONField()
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(max_length=128)
