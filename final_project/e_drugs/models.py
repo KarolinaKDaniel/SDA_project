@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ImageField, \
     JSONField
+from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, \
+    IntegerField, FloatField, ForeignKey, DateField
 
 
 class Alert(Model):
@@ -41,3 +43,9 @@ class Medicine(Model):
     manufacturer = CharField(max_length=128)
     price_net = FloatField()
     image = ImageField(blank=True, null=True)
+
+class MedicineInstance(Model):
+    medicine = ForeignKey(Medicine)
+    expire_dtae = DateField()
+    is_dameged = BooleanField(default=False)
+    code = CharField(max_length=64)
