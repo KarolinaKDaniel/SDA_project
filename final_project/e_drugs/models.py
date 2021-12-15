@@ -11,4 +11,4 @@ class Alert(Model):
 class Substance(Model):
     name = CharField(max_length=20)
     is_active = BooleanField(default=True)
-    do_not_use_with = ManyToManyField("self", related_name="forbidden")
+    do_not_use_with = ManyToManyField("Substance", related_name="forbidden")
