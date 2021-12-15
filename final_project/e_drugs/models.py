@@ -1,10 +1,15 @@
 from django.db import models
-from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField
+from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, IntegerField, FloatField
 
 
 class Alert(Model):
     name = CharField(max_length=128)
     recommendations = TextField()
+
+
+class Discount(Model):
+    name = CharField(max_length=128)
+    amount = IntegerField()
 
 
 class Shipping(Model):
