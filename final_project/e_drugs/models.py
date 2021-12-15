@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, IntegerField, FloatField, ImageField
+from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ImageField
 
 
 class Alert(Model):
