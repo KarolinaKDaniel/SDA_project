@@ -9,7 +9,7 @@ class Alert(Model):
 
 class Discount(Model):
     name = CharField(max_length=128)
-    amount = IntegerField()
+    amount = FloatField()
 
 
 class Shipping(Model):
