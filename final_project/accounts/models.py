@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import TextField, IntegerField, CharField, Model, ForeignKey, CASCADE, ImageField, ManyToManyField, OneToOneField
-from
+from ..e_drugs.models import Affliction
 
 
 class MyUser(User):
@@ -20,4 +20,4 @@ class Doctor(Model):
 class Patient(Model):
     doctor = ManyToManyField(Doctor)
     my_user = OneToOneField(MyUser)
-    affliction = ManyToManyField()
+    affliction = ManyToManyField(Affliction)
