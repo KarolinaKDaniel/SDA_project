@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import TextField, IntegerField, CharField, Model, ForeignKey, CASCADE, ImageField
+from django.db.models import TextField, IntegerField, CharField, Model, ForeignKey, CASCADE, ImageField, OneToOneField
 
 
 class MyUser(User):
@@ -14,4 +14,8 @@ class Doctor(Model):
     specialization = CharField(max_length=128)
     credential_id = CharField(max_length=128)
     photo = ImageField(blank=True, null=True)
+
+class Pharmacist(Model):
+    my_user = OneToOneField(MyUser, on_delete=CASCADE)
+    credential_id = CharField(max_length=128)
 
