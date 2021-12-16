@@ -84,3 +84,8 @@ class Prescription(Model):
     valid = IntegerField(choices=VALID_CHOICES, default="standard")
     is_used = BooleanField(default=False)
     comment = TextField()
+
+class SideEffect(Model):
+    patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
+    medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
+    what_effect = TextField()

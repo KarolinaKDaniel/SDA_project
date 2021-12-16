@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Discount, Alert, Shipping, Substance, Affliction, Medicine, MedicineInstance, Prescription
+from .models import Prescription, Discount, Alert, Shipping, Substance, Affliction, Medicine, MedicineInstance, SideEffect
 
 admin.site.register(Alert)
 admin.site.register(Discount)
@@ -10,3 +10,4 @@ admin.site.register(MedicineInstance)
 admin.site.register(Medicine)
 admin.site.register(Affliction)
 admin.site.register(Prescription)
+admin.site.register(SideEffect)
