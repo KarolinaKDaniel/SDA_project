@@ -82,7 +82,7 @@ class Order(Model):
     created = DateTimeField(auto_now_add=True)
     state = CharField(max_length=9, choices=CHOICES)
     shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
-    discount = ManyToManyField(Discount, null=True)
+    discount = ForeignKey(Discount, on_delete=DO_NOTHING, null=True, blank=True)
 
 
 class Prescription(Model):
