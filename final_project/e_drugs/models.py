@@ -13,6 +13,7 @@ class Alert(Model):
 class Discount(Model):
     name = CharField(max_length=128)
     amount = FloatField()
+    apply_when_over = FloatField()
 
     def __str__(self):
         return self.name
