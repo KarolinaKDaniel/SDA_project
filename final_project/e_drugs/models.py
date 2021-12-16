@@ -70,6 +70,21 @@ class MedicineInstance(Model):
         return self.medicine.name
 
 
+class Order(Model):
+    CHOICES = (
+        ('accepted', 'accepted'),
+        ('paid', 'paid'),
+        ('processed', 'processed'),
+        ('shipped', 'shipped'),
+    )
+    patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
+    medicine_instance = ManyToManyField(MedicineInstance)
+    created = DateTimeField(auto_now_add=True)
+    state = CharField(max_length=9, choices=CHOICES)
+    shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
+    discount = ForeignKey(Discount, on_delete=DO_NOTHING, null=True, blank=True)
+
+
 class Prescription(Model):
     VALID_CHOICES = (
         ("foreign", 120),
@@ -84,6 +99,7 @@ class Prescription(Model):
     valid = IntegerField(choices=VALID_CHOICES, default="standard")
     is_used = BooleanField(default=False)
     comment = TextField()
+
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
