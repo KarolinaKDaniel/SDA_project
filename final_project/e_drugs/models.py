@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
-    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, CASCADE
+    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, CASCADE, IntegerField
 
 
 class Alert(Model):
@@ -77,6 +77,22 @@ class Order(Model):
     state = BooleanField()
     shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
     discount = ManyToManyField(Discount)
+
+
+class Prescription(Model):
+    VALID_CHOICES = (
+        ("foreign", 120),
+        ("standard", 30),
+        ("antibiotic", 7)
+    )
+
+    prescribed_by = ForeignKey('accounts.MyUser', on_delete=DO_NOTHING)
+    patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
+    medicine = ManyToManyField(Medicine, related_name="medicine")
+    created = DateTimeField(auto_now_add=True)
+    valid = IntegerField(choices=VALID_CHOICES, default="standard")
+    is_used = BooleanField(default=False)
+    comment = TextField()
 
 
 class SideEffect(Model):
