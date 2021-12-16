@@ -1,7 +1,6 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
     DateField, DO_NOTHING, JSONField, ImageField
 
-
 class Alert(Model):
     name = CharField(max_length=128)
     recommendations = TextField()
@@ -68,3 +67,8 @@ class MedicineInstance(Model):
 
     def __str__(self):
         return self.medicine.name
+
+class SideEffect(Model):
+    patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
+    medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
+    what_effect = TextField()
