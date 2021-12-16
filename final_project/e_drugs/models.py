@@ -47,7 +47,7 @@ class Affliction(Model):
 class Medicine(Model):
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
-    doses = JSONField()
+    doses = JSONField(default='{}')
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(max_length=128)
