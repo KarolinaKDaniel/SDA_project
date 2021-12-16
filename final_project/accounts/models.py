@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField
+from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
+from e_drugs.models import Affliction
 
 
 class MyUser(User):
@@ -14,6 +15,12 @@ class Doctor(Model):
     specialization = CharField(max_length=128)
     credential_id = CharField(max_length=128)
     photo = ImageField(blank=True, null=True)
+
+
+class Patient(Model):
+    doctor = ManyToManyField(Doctor)
+    my_user = OneToOneField(MyUser, on_delete=CASCADE)
+    affliction = ManyToManyField(Affliction)
 
 
 class Pharmacist(Model):
