@@ -1,5 +1,6 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
-    DateField, DO_NOTHING, JSONField, ImageField
+    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, CASCADE
+from e_drugs.models import Patient
 
 
 class Alert(Model):
@@ -68,3 +69,12 @@ class MedicineInstance(Model):
 
     def __str__(self):
         return self.medicine.name
+
+
+class Order(Model):
+    patient = ForeignKey(Patient, on_delete=CASCADE)
+    medicine_instance = ForeignKey(MedicineInstance, on_delete=DO_NOTHING)
+    created = DateTimeField(auto_now_add=True)
+    state = BooleanField()
+    shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
+    discount = ManyToManyField(Discount)
