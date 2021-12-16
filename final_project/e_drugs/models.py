@@ -47,7 +47,7 @@ class Affliction(Model):
 class Medicine(Model):
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
-    doses = JSONField()
+    doses = JSONField(default='{}')
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(max_length=128)
@@ -87,9 +87,9 @@ class Order(Model):
 
 class Prescription(Model):
     VALID_CHOICES = (
-        ("foreign", 120),
-        ("standard", 30),
-        ("antibiotic", 7)
+        (120, "foreign"),
+        (30, "standard"),
+        (7, "antibiotic")
     )
 
     prescribed_by = ForeignKey('accounts.MyUser', on_delete=DO_NOTHING)
