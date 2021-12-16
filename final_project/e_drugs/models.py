@@ -66,4 +66,4 @@ class MedicineInstance(Model):
     code = CharField(max_length=64)
 
     def __str__(self):
-        return f"{self.medicine.name}"
+        return self.medicine.name
