@@ -72,13 +72,15 @@ class MedicineInstance(Model):
 
 class Order(Model):
     CHOICES = (
-        ('A', 'accepted'),
-        ('P', 'paid'),
+        ('accepted', 'accepted'),
+        ('paid', 'paid'),
+        ('processed', 'processed'),
+        ('shipped', 'shipped'),
     )
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
     medicine_instance = ManyToManyField(MedicineInstance)
     created = DateTimeField(auto_now_add=True)
-    state = CharField(max_length=1, choices=CHOICES)
+    state = CharField(max_length=9, choices=CHOICES)
     shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
     discount = ManyToManyField(Discount, null=True)
 
