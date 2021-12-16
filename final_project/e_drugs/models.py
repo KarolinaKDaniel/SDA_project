@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
-    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, CASCADE, IntegerField
+    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField
 
 
 class Alert(Model):
@@ -71,12 +71,16 @@ class MedicineInstance(Model):
 
 
 class Order(Model):
-    patient = ForeignKey('accounts.Patient', on_delete=CASCADE)
-    medicine_instance = ForeignKey(MedicineInstance, on_delete=DO_NOTHING)
+    CHOICES = (
+        ('A', 'accepted'),
+        ('P', 'paid'),
+    )
+    patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
+    medicine_instance = ManyToManyField(MedicineInstance)
     created = DateTimeField(auto_now_add=True)
-    state = BooleanField()
+    state = CharField(max_length=1, choices=CHOICES)
     shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
-    discount = ManyToManyField(Discount)
+    discount = ManyToManyField(Discount, null=True)
 
 
 class Prescription(Model):
