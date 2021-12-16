@@ -11,6 +11,7 @@ class Alert(Model):
 class Discount(Model):
     name = CharField(max_length=128)
     amount = FloatField()
+    aplied_when_over = FloatField()
 
 
 class Shipping(Model):

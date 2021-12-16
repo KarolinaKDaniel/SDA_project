@@ -8,14 +8,19 @@ class MyUser(User):
     phone = CharField(max_length=20)
     Personal_ID = CharField(max_length=20)
 
+    class Meta:
+        verbose_name = "MyUser"
 
-class Doctor(Model):
-    my_user = OneToOneField(MyUser, on_delete=CASCADE)
+class Doctor(MyUser):
     specialization = CharField(max_length=128)
     credential_id = CharField(max_length=128)
     photo = ImageField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Doctor"
 
-class Pharmacist(Model):
-    my_user = OneToOneField(MyUser, on_delete=CASCADE)
+class Pharmacist(MyUser):
     credential_id = CharField(max_length=128)
+
+    class Meta:
+        verbose_name = "Pharmacist"
