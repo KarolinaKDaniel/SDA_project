@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ patient.my_user.name }} {{ patient.my_user.surname }}</h1>
+<p>Personal ID: {{ patient.my_user.Personal_ID }}</p>
+<p>e-mail: {{ patient.my_user.email }}</p>
+<p>Address {{ patient.my_user.address }}</p>
+<p>Phone: {{ patient.my_user.phone }}</p>
+<p>Afflictions: {{ patient.affliction }}</p>
+{% endblock %}
