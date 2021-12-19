@@ -18,9 +18,9 @@ class Doctor(Model):
 
 
 class Patient(Model):
-    doctor = ManyToManyField(Doctor)
+    doctor = ManyToManyField(Doctor, blank=True)
     my_user = OneToOneField(MyUser, on_delete=CASCADE)
-    affliction = ManyToManyField(Affliction)
+    affliction = ManyToManyField(Affliction, blank=True)
 
 
 class Pharmacist(Model):
