@@ -1,4 +1,7 @@
-from django.forms import ModelForm, CharField, DecimalField, BooleanField, JSONField
+import re
+
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm, CharField, DecimalField, BooleanField, JSONField, Textarea
 
 from .models import Medicine
 
@@ -14,7 +17,9 @@ class MedicineForm(ModelForm):
                                label='Percent of price after refundation')
     price_net = DecimalField(min_value=0, decimal_places=2)
     need_prescription = BooleanField(label='Check if the medicine needs prescription')
-    doses = JSONField(label='Fill in with name of substance and dose in ml accordingly eg.: "substance: 60"')
+    doses = JSONField(widget=Textarea,
+                      label='Fill in with name of substance and dose in ml accordingly eg.: { "substance": "60" }',
+                      initial={})
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
