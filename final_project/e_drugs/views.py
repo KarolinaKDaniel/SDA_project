@@ -13,6 +13,7 @@ class MedicineCreateView(CreateView):
 
 
 class MedicineUpdateView(UpdateView):
+    model = Medicine
     form_class = MedicineForm
     template_name = 'form.html'
     success_url = reverse_lazy('patients')
