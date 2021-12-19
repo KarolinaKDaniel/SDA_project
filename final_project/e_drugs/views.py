@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 from .models import Medicine
 
-def medicine(request):
+def medicines(request):
     sorting = request.GET.get('s', 'default')
     if sorting == "name":
         drugs_list = Medicine.objects.all().order_by("name")
