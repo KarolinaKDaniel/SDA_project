@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+Medicines
+{% endblock %}
+
+{% block content %}
+<h1>Medicines</h1>
+
+<form class="d-flex" method=POST action="{% url 'search-medicine' %}">
+    {% csrf_token %}
+    <div class="col-xs-2">
+        <input class="form-control me-2" type="search" placeholder="Active substance" aria-label="Search"
+               name="searched">
+    </div>
+    <button class="btn btn-outline-success" type="submit">
+        Search
+    </button>
+</form>
+<a class="btn btn-secondary" href="{% url 'medicines-index' %}?s=name">name</a>
+<a class="btn btn-secondary" href="{% url 'medicines-index' %}?s=price_net">price</a>
+{% if searched or medicines %}
+<ul>
+    {% for med in medicines %}
+    <li><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b></br>
+        {% for dos in med.doses.items %}
+        {{ dos.0 }} {{ dos.1 }}
+        {% endfor %}
+    </li>
+    <img src="Null" class="rounded-circle" alt="here should be a picture of the drug">
+    <p><b> Price: </b>{{ med.price_net }} zł
+    </p>
+    {% empty %}
+    <h3>Sorry, I can't find medicine with {{ searched }}</h3>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

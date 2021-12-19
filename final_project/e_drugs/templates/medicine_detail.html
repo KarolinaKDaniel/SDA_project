@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<center>
+    <h1>{{ medicine.name }}</h1>
+    <img src="Null" alt="here should be a picture of the drug" class="img-thumbnail">
+    <h2>Price: {{ medicine.price_net }} zł</h2>
+    <h4>Active substances:
+        {% for dos in medicine.doses.items %}
+        {{ dos.0 }} {{ dos.1 }}
+        {% endfor %}
+        </h4>
+    <h4>Form: {{ medicine.form }}</h4>
+    <h4>Manufacturer: {{ medicine.manufacturer }}</h4>
+    <h2>{% if medicine.need_prescription %}
+        Need prescription!
+        {% else %}
+        Don't need prescription!
+        {% endif %}</h2>
+</center>
+{% endblock %}
