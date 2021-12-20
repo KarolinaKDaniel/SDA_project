@@ -6,5 +6,9 @@
 <p>e-mail: {{ patient.my_user.email }}</p>
 <p>Address {{ patient.my_user.address }}</p>
 <p>Phone: {{ patient.my_user.phone }}</p>
-<p>Afflictions: {{ patient.affliction }}</p>
+<ul>
+    {% for patient in patients %}
+    <li>Afflictions: {{ patient.affliction }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}
