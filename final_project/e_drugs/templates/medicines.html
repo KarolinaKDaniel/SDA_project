@@ -17,18 +17,23 @@ Medicines
         Search
     </button>
 </form>
-<a class="btn btn-secondary" href="{% url 'medicines-index' %}?s=name">name</a>
-<a class="btn btn-secondary" href="{% url 'medicines-index' %}?s=price_net">price</a>
+<a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
+<a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
 {% if searched or medicines %}
 <ul>
     {% for med in medicines %}
-    <li><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b></br>
+    <li><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
         {% for dos in med.doses.items %}
-        {{ dos.0 }} {{ dos.1 }}
+        <i>{{ dos.0 }} - {{ dos.1 }}</i>
         {% endfor %}
     </li>
-    <img src="Null" class="rounded-circle" alt="here should be a picture of the drug">
-    <p><b> Price: </b>{{ med.price_net }} zł
+    {% if med.image %}
+    <img src="{{ med.image.url }}" width="200" height="200" alt="a picture of the drug">
+    {% else %}
+    <img src="{{ '../static/images/no-image.png' }}" width="200" height="200" alt="a picture of the drug">
+    {% endif %}
+    <p>
+        <b> Price: </b>{{ med.price_net }} zł
     </p>
     {% empty %}
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>
