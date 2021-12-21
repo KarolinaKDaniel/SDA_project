@@ -3,7 +3,7 @@ from .views import medicines, DrugDetailView, search_medicine, PrescriptionDetai
     PrescriptionListView, PrescribedByUserListView
 
 urlpatterns = [
-    path('medicines', medicines, name='medicine-all'),
+    path('medicines', medicines, name='medicines-all'),
     path('medicines/<int:pk>', DrugDetailView.as_view(), name='medicine-detail'),
     path('search', search_medicine, name='search-medicine'),
     path('prescription-detail/<int:pk>', PrescriptionDetailView.as_view(), name='prescription-detail'),
