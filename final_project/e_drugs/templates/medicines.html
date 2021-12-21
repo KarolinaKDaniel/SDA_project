@@ -19,7 +19,6 @@ Medicines
 </form>
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
-
 {% if searched or medicines %}
 <ul>
     {% for med in medicines %}
