@@ -1,7 +1,15 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Patient
 from e_drugs.models import Affliction
+from django.urls import reverse_lazy
+
+
+class PatientCreateView(CreateView):
+    template_name = 'patient_form.html'
+    model = Patient
+    success_url = reverse_lazy('patients')
+    
 
 
 class PatientListView(ListView):
@@ -14,10 +22,5 @@ class PatientDetailView(DetailView):
     model = Patient
     template_name = 'patient_detail.html'
     context_object_name = 'patient'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['patients'] = Affliction.objects.all()
-        return context
 
 # Create your views here.
