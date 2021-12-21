@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ patient }}</h1>
+{% if filtered|date:"YmdHis" > now|date:"YmdHis" %}
+    <p>
+        Prescription expire date: {{ filtered|date:"M d, Y" }}
+    </p>
+{% else %}
+    <p>
+        Prescription is not valid anymore :(
+    </p>
+{% endif %}
+
+<hr>
+
+<h3>medicine:</h3>
+<ul>
+    {% for area in prescription.medicine.all %}
+    <li>
+        {{ area }}
+    </li>
+    {% endfor %}
+</ul>
+<p>comment: {{ prescription.comment }}</p>
+<hr>
+
+<h3>was used: {{ prescription.is_used }}</h3>
+<p>Prescribed by: {{ prescription.prescribed_by }}</p>
+{% endblock %}
