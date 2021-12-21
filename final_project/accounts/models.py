@@ -16,6 +16,9 @@ class Doctor(Model):
     credential_id = CharField(max_length=128)
     photo = ImageField(blank=True, null=True)
 
+    class Meta:
+        ordering = ['my_user__last_name']
+
 
 class Patient(Model):
     doctor = ManyToManyField(Doctor)
