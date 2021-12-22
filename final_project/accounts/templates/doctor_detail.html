@@ -2,7 +2,7 @@
 
 {% block content %}
 <center>
-    <img src="{% if doctor.image %}{{ doc.image.url }}{% else %}{{ '../../static/images/no-image.png' }}{% endif %}"
+    <img src="{% if doctor.image %}{{ doc.image.url }}{% else %}{{ '../../static/no-image.png' }}{% endif %}"
          width="233" height="377" alt="a photo of doctor">
     <hr>
     <h3>Dr {{ doctor.my_user.first_name }} {{ doctor.my_user.last_name }}</h3>
