@@ -23,7 +23,10 @@ def medicines(request):
 def search_medicine(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        medicines = Medicine.objects.filter(substance__name__contains=searched, substance__is_active=True)
+        medicines = Medicine.objects.filter(
+            substance__name__contains=searched,
+            substance__is_active=True
+        )
         return render(request, template_name='medicines.html',
                       context={"searched": searched,
                                "medicines": medicines})
