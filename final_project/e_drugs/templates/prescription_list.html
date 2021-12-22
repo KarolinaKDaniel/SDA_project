@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prescription
+{% endblock %}
+
+
+{% block content %}
+<h1>All prescriptions</h1>
+<h4>Sorting</h4>
+
+{% for prescription in prescriptions %}
+    {% if forloop.first %}
+        <a class="btn btn-secondary" href="{% url 'prescription-list' valid=True pk=prescription.patient.id %}">
+            Used
+        </a>
+        <a class="btn btn-secondary" href="{% url 'prescription-list' valid=False pk=prescription.patient.id %}">
+            Not used
+        </a>
+    {% endif %}
+{% endfor %}
+
+<br><br>
+
+{% if prescription.is_used %}
+<ul>
+    {% for prescription in prescriptions %}
+    <li>
+        <a href="{% url 'prescription-detail' pk=prescription.id %}">
+            {{ prescription.patient.my_user.first_name }} {{ prescription.patient.my_user.last_name }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% if not prescription.is_used %}
+
+<ul>
+    {% for prescription in prescriptions %}
+    <li>Prescription for:
+        <a href="{% url 'prescription-detail' pk=prescription.id %}">
+            {{ prescription.patient.my_user.first_name }} {{ prescription.patient.my_user.last_name }}
+            Received: {{ prescription.created|date:"M d, Y" }}
+        </a>
+    </li>
+
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
