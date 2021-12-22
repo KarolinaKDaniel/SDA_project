@@ -8,7 +8,7 @@
 <p>Phone: {{ patient.my_user.phone }}</p>
 Afflictions:
 <ul>
-    {% for affliction in patient.affliction.as_list %}
+    {% for affliction in patient.affliction.all %}
     <li> {{ affliction.name }}</li>
     {% endfor %}
 </ul>
