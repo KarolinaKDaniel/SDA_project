@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Medicines
@@ -27,7 +28,7 @@ Medicines
         <i>{{ dos.0 }} - {{ dos.1 }}</i>
         {% endfor %}
     </li>
-    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/images/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
+    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
     <p>
         <b> Price: </b>{{ med.price_net }} zł
     </p>
