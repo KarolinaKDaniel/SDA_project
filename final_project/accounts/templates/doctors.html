@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}
 Doctors
@@ -26,7 +25,7 @@ Doctors
     <li class="list-group-item">
         <div class="media">
             <div class="media-left">
-                <img src="{% if doc.image %}{{ doc.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}"
+                <img src="{% if doc.image %}{{ doc.image.url }}{% else %}{{ '../static/images/no-image.png' }}{% endif %}"
                      class="align-self-center mr-3" width="89" height="144"
                      alt="a photo of doctor">
             </div>
