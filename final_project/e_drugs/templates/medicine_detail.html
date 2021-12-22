@@ -4,17 +4,15 @@
 {% block content %}
 <center>
     <h1>{{ medicine.name }}</h1>
-    {% if medicine.image %}
-    <img src="{{ medicine.image.url }}" width="200" height="200" alt="a picture of the drug">
-    {% else %}
-    <img src="{{ '../../static/no-image.png' }}" width="200" height="200" alt="a picture of the drug">
-    {% endif %}
-    <h2>Price: {{ medicine.price_net }} zł</h2>
     <h4>Active substances:
         {% for dos in medicine.doses.items %}
         <i>{{ dos.0 }} - {{ dos.1 }}</i>
         {% endfor %}
     </h4>
+    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../../static/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
+
+    <h2>Price: {{ medicine.price_net }} zł</h2>
+    <hr>
     <h4>Form: {{ medicine.form }}</h4>
     <h4>Manufacturer: {{ medicine.manufacturer }}</h4>
     <h2>{% if medicine.need_prescription %}
