@@ -20,18 +20,14 @@ Medicines
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
 {% if searched or medicines %}
-<ul>
+<ul class="list-group list-group-flush">
     {% for med in medicines %}
-    <li><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
+    <li class="list-group-item"><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
         {% for dos in med.doses.items %}
         <i>{{ dos.0 }} - {{ dos.1 }}</i>
         {% endfor %}
     </li>
-    {% if med.image %}
-    <img src="{{ med.image.url }}" width="200" height="200" alt="a picture of the drug">
-    {% else %}
-    <img src="{{ '../static/images/no-image.png' }}" width="200" height="200" alt="a picture of the drug">
-    {% endif %}
+    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/images/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
     <p>
         <b> Price: </b>{{ med.price_net }} zł
     </p>
