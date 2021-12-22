@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
-from e_drugs.models import Affliction
+
 
 
 class MyUser(User):
@@ -22,7 +22,7 @@ class Doctor(Model):
 class Patient(Model):
     doctor = ManyToManyField(Doctor)
     my_user = OneToOneField(MyUser, on_delete=CASCADE)
-    affliction = ManyToManyField(Affliction)
+    affliction = ManyToManyField('e_drugs.Affliction', related_name="patient")
 
 
 class Pharmacist(Model):
