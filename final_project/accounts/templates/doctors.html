@@ -31,7 +31,7 @@ Doctors
                      alt="a photo of doctor">
             </div>
             <div class="media-body">
-                <h4 class="media-heading">Dr {{ doc.my_user.first_name }} {{ doc.my_user.last_name }}</h4>
+                <h4 class="media-heading"><a href="{% url 'doctor-detail' doc.id %}">Dr {{ doc.my_user.first_name }} {{ doc.my_user.last_name }}</a></h4>
                 <p>Specialization: {{ doc.specialization }}</p>
             </div>
         </div>

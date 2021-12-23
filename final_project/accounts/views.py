@@ -17,6 +17,12 @@ class PatientListView(ListView):
     context_object_name = 'patients'
 
 
+class DoctorDetailView(DetailView):
+    template_name = "doctor_detail.html"
+    model = Doctor
+    context_object_name = "doctor"
+
+
 class DoctorListView(ListView):
     template_name = 'doctors.html'
     model = Doctor
