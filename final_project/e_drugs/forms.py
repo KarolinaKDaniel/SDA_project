@@ -1,8 +1,6 @@
 import json
 
-from django.core.exceptions import ValidationError
-from django.forms import ModelForm, CharField, DecimalField, BooleanField, JSONField, Textarea, Select, Field, \
-    ModelChoiceField, Form, IntegerField, MultiWidget, TextInput, NumberInput, Widget, CheckboxSelectMultiple
+from django.forms import ModelForm, CharField, DecimalField, JSONField, ModelChoiceField
 from django.template.loader import render_to_string
 from json_model_widget.widgets import JsonPairInputs
 
