@@ -1,11 +1,29 @@
-import re
+import json
 
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, CharField, DecimalField, BooleanField, JSONField, Textarea, Select, Field, \
-    ModelChoiceField, Form, IntegerField, MultiWidget, TextInput, NumberInput, Widget
+    ModelChoiceField, Form, IntegerField, MultiWidget, TextInput, NumberInput, Widget, CheckboxSelectMultiple
+from django.template.loader import render_to_string
 from json_model_widget.widgets import JsonPairInputs
 
-from .models import Medicine, Substance, Alert
+from .models import Medicine, Substance, Alert, Dose
+
+class CustomJsonField(JsonPairInputs):
+
+    def render(self, name, value, attrs=None, renderer=None) -> str:
+
+        if value is None or value.strip() is '':
+            value = '{}'
+
+        context = {
+            "col1": self.col1.all(),
+            "col2": self.col2.all(),
+            "json": json.loads(value),
+            "name": name
+        }
+
+        return render_to_string('json_template.html', context=context)
+
 
 class MedicineForm(ModelForm):
 
@@ -13,11 +31,8 @@ class MedicineForm(ModelForm):
         model = Medicine
         fields = '__all__'
 
-    name = CharField(max_length=128)
-    substance = ModelChoiceField(queryset=Substance.objects.all())
-    doses = IntegerField()
+    doses = JSONField(widget=CustomJsonField(Substance, Dose))
     refundation = DecimalField(min_value=0, max_value=100, decimal_places=2, initial=100)
-    need_prescription = BooleanField(initial=False)
     form = Select(Medicine.CHOICES)
     alerts = ModelChoiceField(queryset=Alert.objects.all(), required=False)
     manufacturer = CharField(max_length=128)
@@ -28,21 +43,3 @@ class MedicineForm(ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    def clean_doses(self):
-        cleaned_doses =
-
-    # class Meta:
-    #     model = Medicine
-    #     fields = '__all__'
-    #
-    #     widgets = {
-    #         'doses': CustomDosesWidget
-    #     }
-    #
-    #     def __init__(self, *args, **kwargs):
-    #         super().__init__(*args, **kwargs)
-    #         for visible in self.visible_fields():
-    #             visible.field.widget.attrs['class'] = 'form-control'
-    #
-    # def clean_doses(self):
-    #     doses_cleaned =

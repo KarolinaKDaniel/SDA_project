@@ -30,10 +30,14 @@ class Shipping(Model):
 class Substance(Model):
     name = CharField(max_length=20)
     is_active = BooleanField(default=True)
-    do_not_use_with = ManyToManyField("Substance", related_name="forbidden", blank=True)
+    do_not_use_with = ManyToManyField("Substance", blank=True, symmetrical=True)
+
+    class Meta:
+        ordering = ('name', )
 
     def __str__(self):
         return self.name
+
 
 
 class Affliction(Model):
@@ -120,3 +124,10 @@ class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
     what_effect = TextField()
+
+
+class Dose(Model):
+    value = IntegerField()
+
+    def __str__(self):
+        return str(self.value)
