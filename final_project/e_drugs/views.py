@@ -34,14 +34,14 @@ def search_medicine(request):
 
 class MedicineCreateView(CreateView):
     form_class = MedicineForm
-    template_name = 'form.html'
+    template_name = 'medicine_form.html'
     success_url = reverse_lazy('patients')
 
 
 class MedicineUpdateView(UpdateView):
     model = Medicine
     form_class = MedicineForm
-    template_name = 'form.html'
+    template_name = 'medicine_form.html'
     success_url = reverse_lazy('patients')
 
 
@@ -49,6 +49,7 @@ class MedicineDeteleView(DeleteView):
     template_name = 'medicine_delete.html'
     model = Medicine
     success_url = reverse_lazy('patients')
+
 
 class PrescriptionDetailView(DetailView):
     model = Prescription
