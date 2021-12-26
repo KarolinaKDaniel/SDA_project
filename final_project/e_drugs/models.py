@@ -119,6 +119,8 @@ class Prescription(Model):
     is_used = BooleanField(default=False)
     comment = TextField()
 
+    def __str__(self):
+        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.created}'
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
@@ -126,8 +128,3 @@ class SideEffect(Model):
     what_effect = TextField()
 
 
-class Dose(Model):
-    value = IntegerField()
-
-    def __str__(self):
-        return str(self.value)
