@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView
 from .models import Prescription, Medicine
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
+def main_page(request):
+    return render(request, template_name='main_page.html')
 
 def medicines(request):
     sorting = request.GET.get('s', 'default')
