@@ -1,8 +1,7 @@
 import json
 
-from django.forms import ModelForm, CharField, DecimalField, JSONField, ModelChoiceField
+from django.forms import ModelForm
 from django.template.loader import render_to_string
-from json_model_widget.widgets import JsonPairInputs
 
 from .models import Medicine
 
