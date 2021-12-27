@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm, PrescriptionForm
-from .models import Prescription, Medicine
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm
+from .models import Prescription, Medicine, SideEffect
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
@@ -127,18 +127,43 @@ class PrescribedByUserListView(ListView):
 
 class PrescriptionCreateView(CreateView):
     form_class = PrescriptionForm
-    template_name = 'prescription_form.html'
+    template_name = 'prescription_forms.html'
     success_url = reverse_lazy('index')
 
 
 class PrescriptionUpdateView(UpdateView):
     model = Prescription
     form_class = PrescriptionForm
-    template_name = 'prescription_form.html'
+    template_name = 'prescription_forms.html'
     success_url = reverse_lazy('index')
 
 
 class PrescriptionDeleteView(DeleteView):
     template_name = 'prescription_delete.html'
     model = Prescription
+    success_url = reverse_lazy('index')
+
+
+class SideEffectCreateView(CreateView):
+    form_class = SideEffectForm
+    template_name = 'side_effect_forms.html'
+    success_url = reverse_lazy('index')
+
+
+class SideEffectDetailView(DetailView):
+    template_name = 'side_effect_detail.html'
+    model = SideEffect
+    context_object_name = 'side_effect'
+
+
+class SideEffectUpdateView(UpdateView):
+    model = SideEffect
+    form_class = SideEffectForm
+    template_name = 'side_effect_forms.html'
+    success_url = reverse_lazy('index')
+
+
+class SideEffectDeleteView(DeleteView):
+    template_name = 'side_effect_delete.html'
+    model = SideEffect
     success_url = reverse_lazy('index')
