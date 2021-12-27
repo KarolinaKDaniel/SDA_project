@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'e_drugs',
-    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
