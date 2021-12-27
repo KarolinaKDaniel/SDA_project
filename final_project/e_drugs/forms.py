@@ -1,19 +1,26 @@
 import json
 
-from django.forms import ModelForm, CharField, DecimalField, JSONField, ModelChoiceField
+from django.forms import ModelForm, CharField, DecimalField, JSONField, ModelChoiceField, HiddenInput, Widget, \
+    IntegerField, ChoiceField
 from django.template.loader import render_to_string
-from json_model_widget.widgets import JsonPairInputs
 
-from .models import Medicine
+from .models import Medicine, Substance
 
+
+#
+# class SubstanceAndDoseWidget(Widget):
+#
+#     def __init__(self, *args, **kwargs):
+#         self.substance_name = ModelChoiceField(queryset=Substance.objects.all())
+#         self.substance_dose = IntegerField()
 
 class MedicineForm(ModelForm):
-
     class Meta:
         model = Medicine
         fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+        widgets = {
+            'substance': HiddenInput(),
+            'refundation': DecimalField(max_value=100, min_value=0, initial=100),
+            'form': ChoiceField(choices=Medicine.CHOICES),
+            'price_net': DecimalField()
+        }

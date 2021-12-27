@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}
 Add Medicine
 {% endblock %}
@@ -8,7 +10,8 @@ Add Medicine
     <h1>Add Medicine</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_table }}
+        <h5>Market Name</h5>
+        {% render_field form.name %}
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 {% endblock %}
