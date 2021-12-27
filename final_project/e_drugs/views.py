@@ -1,6 +1,10 @@
 import datetime
+
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from .forms import MedicineForm
 from .models import Prescription, Medicine
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
@@ -30,6 +34,25 @@ def search_medicine(request):
                                "medicines": medicines})
 
 
+class MedicineCreateView(CreateView):
+    form_class = MedicineForm
+    template_name = 'medicine_form.html'
+    success_url = reverse_lazy('medicines-all')
+
+
+class MedicineUpdateView(UpdateView):
+    model = Medicine
+    form_class = MedicineForm
+    template_name = 'medicine_form.html'
+    success_url = reverse_lazy('medicines-all')
+
+
+class MedicineDeteleView(DeleteView):
+    template_name = 'medicine_delete.html'
+    model = Medicine
+    success_url = reverse_lazy('medicines-all')
+
+
 class PrescriptionDetailView(DetailView):
     model = Prescription
     template_name = 'prescription_detail.html'
@@ -49,7 +72,7 @@ class PrescriptionDetailView(DetailView):
         return context
 
 
-class DrugDetailView(DetailView):
+class MedicineDetailView(DetailView):
     template_name = 'medicine_detail.html'
     model = Medicine
     context_object_name = 'medicine'

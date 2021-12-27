@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'e_drugs'
+    'e_drugs',
 ]
 
 MIDDLEWARE = [

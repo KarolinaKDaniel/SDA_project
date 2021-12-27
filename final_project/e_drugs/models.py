@@ -30,28 +30,47 @@ class Shipping(Model):
 class Substance(Model):
     name = CharField(max_length=20)
     is_active = BooleanField(default=True)
-    do_not_use_with = ManyToManyField("Substance", related_name="forbidden", blank=True)
+    do_not_use_with = ManyToManyField("Substance", blank=True, symmetrical=True)
+
+    class Meta:
+        ordering = ('name', )
 
     def __str__(self):
         return self.name
 
 
+
 class Affliction(Model):
     name = CharField(max_length=128)
-    do_not_use = ManyToManyField(Substance, related_name="forbidden_sub")
+    do_not_use = ManyToManyField(Substance, related_name="forbidden_sub", blank=True)
 
     def __str__(self):
         return self.name
 
 
 class Medicine(Model):
+    CHOICES = [
+        ('pill', 'pill'),
+        ('capsule', 'capsule'),
+        ('cream', 'cream'),
+        ('powder', 'powder'),
+        ('spray', 'spray'),
+        ('syrup', 'syrup'),
+        ('dragee', 'dragee'),
+        ('suppository', 'suppository'),
+        ('ointment', 'ointment'),
+        ('gel', 'gel'),
+        ('emulsion', 'emulsion'),
+        ('suspension', 'suspension'),
+        ('solution', 'solution')
+    ]
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
     doses = JSONField(default=dict)
     refundation = FloatField()
     need_prescription = BooleanField()
-    form = CharField(max_length=128)
-    alerts = ManyToManyField(Alert)
+    form = CharField(choices=CHOICES, max_length=15)
+    alerts = ManyToManyField(Alert, blank=True)
     manufacturer = CharField(max_length=128)
     price_net = FloatField()
     image = ImageField(blank=True, null=True)
@@ -100,8 +119,12 @@ class Prescription(Model):
     is_used = BooleanField(default=False)
     comment = TextField()
 
+    def __str__(self):
+        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.created}'
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
     what_effect = TextField()
+
+
