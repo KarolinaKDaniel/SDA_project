@@ -4,12 +4,14 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm
+from .forms import MedicineForm, PrescriptionForm
 from .models import Prescription, Medicine
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
+
 def main_page(request):
     return render(request, template_name='main_page.html')
+
 
 def medicines(request):
     sorting = request.GET.get('s', 'default')
@@ -38,6 +40,12 @@ class MedicineCreateView(CreateView):
     form_class = MedicineForm
     template_name = 'medicine_form.html'
     success_url = reverse_lazy('medicines-all')
+
+
+class MedicineDetailView(DetailView):
+    template_name = 'medicine_detail.html'
+    model = Medicine
+    context_object_name = 'medicine'
 
 
 class MedicineUpdateView(UpdateView):
@@ -70,12 +78,6 @@ class PrescriptionDetailView(DetailView):
         context['filtered'] = valid
 
         return context
-
-
-class MedicineDetailView(DetailView):
-    template_name = 'medicine_detail.html'
-    model = Medicine
-    context_object_name = 'medicine'
 
 
 class PrescriptionListView(ListView):
@@ -121,3 +123,22 @@ class PrescribedByUserListView(ListView):
 
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
         return context
+
+
+class PrescriptionCreateView(CreateView):
+    form_class = PrescriptionForm
+    template_name = 'prescription_form.html'
+    success_url = reverse_lazy('index')
+
+
+class PrescriptionUpdateView(UpdateView):
+    model = Prescription
+    form_class = PrescriptionForm
+    template_name = 'prescription_form.html'
+    success_url = reverse_lazy('index')
+
+
+class PrescriptionDeleteView(DeleteView):
+    template_name = 'prescription_delete.html'
+    model = Prescription
+    success_url = reverse_lazy('index')
