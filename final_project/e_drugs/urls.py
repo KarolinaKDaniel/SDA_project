@@ -5,9 +5,6 @@ from .views import medicines, MedicineDetailView, search_medicine, PrescriptionD
     SideEffectDetailView, SideEffectUpdateView, SideEffectDeleteView
 
 urlpatterns = [
-    path('medicines', medicines, name='medicines-all'),
-    path('medicines/<int:pk>', MedicineDetailView.as_view(), name='medicine-detail'),
-    path('search', search_medicine, name='search-medicine'),
     path('prescription-create', PrescriptionCreateView.as_view(), name='prescription-create'),
     path('prescription-delete/<int:pk>', PrescriptionDeleteView.as_view(), name='prescription-delete'),
     path('prescription-update/<int:pk>', PrescriptionUpdateView.as_view(), name='prescription-update'),
@@ -21,7 +18,10 @@ urlpatterns = [
     path('side-effect-update/<int:pk>', SideEffectUpdateView.as_view(), name='side-effect-update'),
     path('side-effect-delete/<int:pk>', SideEffectDeleteView.as_view(), name='side-effect-delete'),
 
+    path('medicines', medicines, name='medicines-all'),
+    path('search', search_medicine, name='search-medicine'),
     path('medicine-create', MedicineCreateView.as_view(), name='med-create'),
+    path('medicines/<int:pk>', MedicineDetailView.as_view(), name='medicine-detail'),
     path('medicine-update/<int:pk>', MedicineUpdateView.as_view(), name='med-update'),
     path('medicine-delete/<int:pk>', MedicineDeteleView.as_view(), name='med-delete'),
     path('', main_page, name='index'),
