@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Side Effect detail
+{% endblock %}
+
+{% block content %}
+
+<h1>Side Effect for "{{ side_effect.medicine }}"</h1>
+<h4>Patient: {{ side_effect.patient }}</h4>
+<hr>
+<h5>Description for side effect:</h5>
+<p>{{ side_effect.what_effect }}</p>
+{% endblock %}
