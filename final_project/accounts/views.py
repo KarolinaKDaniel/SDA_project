@@ -1,13 +1,27 @@
 from django.shortcuts import render
 from .models import Patient, Doctor
 from django.db.models import Q
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from .forms import PatientForm
 
 
 class PatientCreateView(CreateView):
+    form_class = PatientForm
     template_name = 'patient_form.html'
+    success_url = reverse_lazy('patients')
+
+
+class PatientUpdateView(UpdateView):
+    form_class = PatientForm
     model = Patient
+    template_name = 'patient_form.html'
+    success_url = reverse_lazy('patients')
+
+
+class PatientDeleteView(DeleteView):
+    model = Patient
+    template_name = 'patient_delete.html'
     success_url = reverse_lazy('patients')
 
 
