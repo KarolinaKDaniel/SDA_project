@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load widget_tweaks %}
-
 {% block title %}
 Add Medicine
 {% endblock %}
@@ -11,7 +9,12 @@ Add Medicine
     <form method="post">
         {% csrf_token %}
         <h5>Market Name</h5>
-        {% render_field form.name %}
+        {{ form.name }}
+        <h5>Substance Doses</h5>
+        <p>Choose name of the substance and type the dose in ml.</p>
+        {% for subwidget in form.dose.subwidgets %}
+        {{ subwidget }}
+        {% endfor %}
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 {% endblock %}

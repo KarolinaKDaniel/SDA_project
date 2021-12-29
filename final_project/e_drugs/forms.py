@@ -2,7 +2,7 @@ import json
 
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, MultiWidget, Select, NumberInput, IntegerField, ChoiceField, MultipleHiddenInput, \
-    MultiValueField, SplitDateTimeField
+    MultiValueField, SplitDateTimeField, MultipleChoiceField
 
 from .models import Medicine, Substance
 
@@ -17,11 +17,14 @@ class CustomDoseWidget(MultiWidget):
         super().__init__(widgets, *args, **kwargs)
 
     def decompress(self, value):
-        if isinstance(value, Substance):
-            return value.name
-        elif isinstance(value, int):
+        if isinstance(value, dict):
+            return []
+        elif isinstance(value, str):
             return value
         return [None, None]
+
+    def get_context(self, name, value, attrs):
+        pass
 
 
 class CustomDoseField(MultiValueField):
@@ -43,17 +46,16 @@ class CustomDoseField(MultiValueField):
                 raise ValidationError(self.error_messages['incomplete'])
             result = '{' + f' "{data_list[0].name}": "{data_list[1]}" ' + '}'
 
+
 class MedicineForm(ModelForm):
     class Meta:
         model = Medicine
         fields = '__all__'
-        widgets = {
-            'substance': MultipleHiddenInput(),
-        }
 
+    substance = MultipleChoiceField(widget=MultipleHiddenInput())
     doses = CustomDoseField()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for visible in self.visible_fields():
+    #         visible.field.widget.attrs['class'] = 'form-control'
