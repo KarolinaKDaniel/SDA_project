@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
-    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField
+    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField, DecimalField
 
 
 class Alert(Model):
@@ -12,7 +12,7 @@ class Alert(Model):
 
 class Discount(Model):
     name = CharField(max_length=128)
-    amount = FloatField()
+    amount = DecimalField(max_digits=10, decimal_places=2)
     apply_when_over = FloatField()
 
     def __str__(self):
@@ -21,14 +21,14 @@ class Discount(Model):
 
 class Shipping(Model):
     name = CharField(max_length=128)
-    price = FloatField()
+    price = DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name
 
 
 class Substance(Model):
-    name = CharField(max_length=20)
+    name = CharField(max_length=128)
     is_active = BooleanField(default=True)
     do_not_use_with = ManyToManyField("Substance", blank=True, symmetrical=True)
 
@@ -66,12 +66,12 @@ class Medicine(Model):
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
     doses = JSONField(default=dict)
-    refundation = FloatField()
+    refundation = DecimalField(max_digits=3, decimal_places=2)
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)
     alerts = ManyToManyField(Alert, blank=True)
     manufacturer = CharField(max_length=128)
-    price_net = FloatField()
+    price_net = DecimalField(max_digits=10, decimal_places=2)
     image = ImageField(blank=True, null=True)
 
     def __str__(self):
