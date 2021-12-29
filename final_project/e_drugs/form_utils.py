@@ -1,13 +1,11 @@
 from django.core.exceptions import ValidationError
-from django.forms import MultiWidget, Select, NumberInput, MultiValueField, ChoiceField, IntegerField
-from .models import Substance
+from django.forms import MultiWidget, Select, NumberInput, MultiValueField, ChoiceField, IntegerField, ModelChoiceField, M
 
 
 class CustomDoseWidget(MultiWidget):
-    def __init__(self, *args, **kwargs):
-        substances = [subs.name for subs in Substance.objects.all()]
+    def __init__(self, choices, *args, **kwargs):
         widgets = [
-            Select(choices=substances),
+            Select(choices=choices),
             NumberInput()
         ]
         super().__init__(widgets, *args, **kwargs)
@@ -24,13 +22,12 @@ class CustomDoseWidget(MultiWidget):
 
 
 class CustomDoseField(MultiValueField):
-    def __init__(self, *args, **kwargs):
-        choices = list(Substance.objects.all())
+    def __init__(self, choices, *args, **kwargs):
         error_messages = {
             'incomplete': 'Choose a substance and put in the dose ammount in ml'
         }
         fields = {
-            ChoiceField(choices=choices),
+            ModelChoiceField(queryset=choices),
             IntegerField(min_value=0)
         }
         # widget = CustomDoseWidget

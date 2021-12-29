@@ -1,5 +1,6 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
     DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField
+from .form_utils import CustomDoseField
 
 
 class Alert(Model):
@@ -66,7 +67,7 @@ class Medicine(Model):
     ]
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
-    doses = JSONField(default=dict)
+    doses = CustomDoseField(choices=Substance.objects.all())
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)
