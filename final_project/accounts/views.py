@@ -1,10 +1,14 @@
-from django.shortcuts import render
-from .models import Patient, Doctor
+from django.contrib.auth.views import LoginView
 from django.db.models import Q
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import PatientForm
 
+from .models import Patient, Doctor
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
 
 class PatientCreateView(CreateView):
     form_class = PatientForm
