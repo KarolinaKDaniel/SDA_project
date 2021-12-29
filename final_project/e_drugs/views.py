@@ -5,11 +5,13 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .forms import MedicineForm
-from .models import Prescription, Medicine
+from .models import Prescription, Medicine, Order
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
+
 
 def main_page(request):
     return render(request, template_name='main_page.html')
+
 
 def medicines(request):
     sorting = request.GET.get('s', 'default')
@@ -120,4 +122,28 @@ class PrescribedByUserListView(ListView):
                 context['profession'] = None
 
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
+        return context
+
+
+class CurrentOrdersListView(ListView):
+    template_name = 'current_orders_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        state, pk = self.kwargs['state'], self.kwargs['pk']
+        patient = Patient.objects.get(id=pk)
+
+        if state == 'accepted':
+            queryset = Order.objects.filter(patient=patient, state='accepted')
+        elif state == 'paid':
+            queryset = Order.objects.filter(patient=patient, state='paid')
+        elif state == 'processed':
+            queryset = Order.objects.filter(patient=patient, state='processed')
+        elif state == 'shipped':
+            queryset = Order.objects.filter(patient=patient, state='shipped')[:1]
+        else:
+            queryset = None
+        context['orders'] = queryset
+
         return context

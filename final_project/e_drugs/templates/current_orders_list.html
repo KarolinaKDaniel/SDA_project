@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Current orders
+{% endblock %}
+
+
+{% block content %}
+<h1>Current orders:</h1>
+
+{% for order in orders %}
+    {% if forloop.first %}
+        <a class="btn btn-info" href="{% url 'current-orders' pk=order.patient.id state='accepted' %}">
+            Accepted
+        </a>
+        <a class="btn btn-info" href="{% url 'current-orders' pk=order.patient.id state='paid' %}">
+            Paid
+        </a>
+        <a class="btn btn-info" href="{% url 'current-orders' pk=order.patient.id state='processed' %}">
+            Processed
+        </a>
+        <a class="btn btn-info" href="{% url 'current-orders' pk=order.patient.id state='shipped' %}">
+            Shipped
+        </a>
+    {% endif %}
+{% empty %}
+    <h1>Those orders doesn't exist!</h1>
+{% endfor %}
+
+
+<ul class="list-group list-group-flush">
+    {% for order in orders %}
+    <li class="list-group-item">
+        <h4>{{ order.patient }} ordered:</h4>
+
+          <ol>
+              {% for med in order.medicine_instance.all %}
+              <li>{{ med }}</li>
+              {% endfor %}
+              <hr>
+          </ol>
+        <i>{{ order.created|date:"d M Y" }}</i> <br>
+        <h4>Status: {{ order.state }}</h4>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
