@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Order of {{ patient }}</h1>
+
+
+<ol class="list-group list-group-flush">
+    {% for med in order.medicine_instance.all %}
+    <li class="list-group-item">{{ med }}</li>
+    {% endfor %}
+</ol>
+<h3>Shipping by {{ order.shipping.name }}</h3>
+<h3>Discount {{ order.discount }}</h3>
+<h3>{{ order.created|date:"d M Y" }}</h3>
+
+{% endblock %}

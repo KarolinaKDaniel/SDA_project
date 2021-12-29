@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import medicines, MedicineDetailView, search_medicine, PrescriptionDetailView, \
     PrescriptionListView, PrescribedByUserListView, MedicineCreateView, MedicineUpdateView, MedicineDeteleView, \
-    main_page, CurrentOrdersListView, ArchivalOrdersListView, OrdersByStateListView
+    main_page, CurrentOrdersListView, ArchivalOrdersListView, OrdersByStateListView, OrderDetailView
 
 urlpatterns = [
     path('medicines', medicines, name='medicines-all'),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('current-orders-list/<int:pk>/<str:state>', CurrentOrdersListView.as_view(), name='current-orders'),
     path('archival-orders-list/<int:pk>', ArchivalOrdersListView.as_view(), name='archival-orders'),
     path('orders-list/<str:state>', OrdersByStateListView.as_view(), name='orders-list'),
+    path('order-detail/<int:pk>', OrderDetailView.as_view(), name='order-detail'),
 ]
