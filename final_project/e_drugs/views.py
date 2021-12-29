@@ -147,3 +147,19 @@ class CurrentOrdersListView(ListView):
         context['orders'] = queryset
 
         return context
+
+
+class ArchivalOrdersListView(ListView):
+    template_name = 'archival_orders_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient = Patient.objects.get(id=self.kwargs['pk'])
+
+        archival_order_list = Order.objects.filter(state='shipped', patient=patient)
+
+        context['orders'] = archival_order_list
+        context['patient'] = patient
+
+        return context
