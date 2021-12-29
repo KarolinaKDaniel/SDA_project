@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .forms import MedicineForm, PrescriptionForm, SideEffectForm
-from .models import Prescription, Medicine, SideEffect
+from .models import Prescription, Medicine, SideEffect, Order
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
@@ -168,3 +168,27 @@ class SideEffectDeleteView(DeleteView):
     template_name = 'side_effect_delete.html'
     model = SideEffect
     success_url = reverse_lazy('index')
+
+
+class CurrentOrdersListView(ListView):
+    template_name = 'current_orders_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        state, pk = self.kwargs['state'], self.kwargs['pk']
+        patient = Patient.objects.get(id=pk)
+
+        if state == 'accepted':
+            queryset = Order.objects.filter(patient=patient, state='accepted')
+        elif state == 'paid':
+            queryset = Order.objects.filter(patient=patient, state='paid')
+        elif state == 'processed':
+            queryset = Order.objects.filter(patient=patient, state='processed')
+        elif state == 'shipped':
+            queryset = Order.objects.filter(patient=patient, state='shipped')[:1]
+        else:
+            queryset = None
+        context['orders'] = queryset
+
+        return context
