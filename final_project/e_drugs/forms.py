@@ -23,6 +23,7 @@ class PrescriptionForm(ModelForm):
     class Meta:
         model = Prescription
         fields = '__all__'
+        exclude = ['is_used']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
