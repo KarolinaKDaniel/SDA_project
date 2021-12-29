@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Current orders
+    Current orders
 {% endblock %}
 
 
@@ -42,6 +42,9 @@ Current orders
         <i>{{ order.created|date:"d M Y" }}</i> <br>
         <h4>Status: {{ order.state }}</h4>
     </li>
+        {% if order.state == 'shipped' %}
+               <a class="btn btn-info" href="{% url 'archival-orders' pk=order.patient.id %}">Archival orders</a>
+        {% endif %}
     {% endfor %}
 </ul>
 {% endblock %}
