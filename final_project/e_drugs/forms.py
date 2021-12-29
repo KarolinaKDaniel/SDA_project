@@ -10,7 +10,7 @@ from .models import Medicine, Substance
 class CustomDoseWidget(MultiWidget):
     def __init__(self, *args, **kwargs):
         substances = Substance.objects.all()
-        widgets = [
+        self.widgets = [
             Select(choices=substances),
             NumberInput()
         ]
@@ -18,13 +18,13 @@ class CustomDoseWidget(MultiWidget):
 
     def decompress(self, value):
         if isinstance(value, dict):
-            return []
+            for key in value.keys():
+                return [key, value[key]]
         elif isinstance(value, str):
-            return value
+            decompressed_value = value.strip('{} "')
+            decompressed_value = decompressed_value.split(":")
+            return decompressed_value
         return [None, None]
-
-    def get_context(self, name, value, attrs):
-        pass
 
 
 class CustomDoseField(MultiValueField):

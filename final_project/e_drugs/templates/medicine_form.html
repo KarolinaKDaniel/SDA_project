@@ -12,9 +12,7 @@ Add Medicine
         {{ form.name }}
         <h5>Substance Doses</h5>
         <p>Choose name of the substance and type the dose in ml.</p>
-        {% for subwidget in form.dose.subwidgets %}
-        {{ subwidget }}
-        {% endfor %}
+        {{ form.doses }}
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 {% endblock %}
