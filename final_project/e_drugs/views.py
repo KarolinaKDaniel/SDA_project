@@ -208,3 +208,4 @@ class ArchivalOrdersListView(ListView):
         context['patient'] = patient
 
         return context
+
