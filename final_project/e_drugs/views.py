@@ -163,3 +163,26 @@ class ArchivalOrdersListView(ListView):
         context['patient'] = patient
 
         return context
+
+
+class OrdersByStateListView(ListView):
+    template_name = 'orders_by_state_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        state = self.kwargs['state']
+
+        if state == 'accepted':
+            queryset = Order.objects.filter(state='accepted')
+        elif state == 'paid':
+            queryset = Order.objects.filter(state='paid')
+        elif state == 'processed':
+            queryset = Order.objects.filter(state='processed')
+        elif state == 'shipped':
+            queryset = Order.objects.filter(state='shipped')
+        else:
+            queryset = None
+        context['orders'] = queryset
+
+        return context
