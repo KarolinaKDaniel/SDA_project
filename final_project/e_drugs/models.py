@@ -67,7 +67,7 @@ class Medicine(Model):
     ]
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
-    doses = CustomDoseField(choices=Substance.objects.all())
+    doses = JSONField()
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)

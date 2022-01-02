@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.forms import MultiWidget, Select, NumberInput, MultiValueField, ChoiceField, IntegerField, ModelChoiceField, M
+from django.forms import MultiWidget, Select, NumberInput, MultiValueField, ChoiceField, IntegerField, ModelChoiceField
 
 
 class CustomDoseWidget(MultiWidget):
