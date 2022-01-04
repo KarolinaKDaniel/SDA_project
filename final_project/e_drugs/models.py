@@ -1,5 +1,5 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
-    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField, DecimalField
+    DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField
 
 
 class Alert(Model):
@@ -12,7 +12,7 @@ class Alert(Model):
 
 class Discount(Model):
     name = CharField(max_length=128)
-    amount = DecimalField(max_digits=10, decimal_places=2)
+    amount = FloatField()
     apply_when_over = FloatField()
 
     def __str__(self):
@@ -21,7 +21,7 @@ class Discount(Model):
 
 class Shipping(Model):
     name = CharField(max_length=128)
-    price = DecimalField(max_digits=10, decimal_places=2)
+    price = FloatField()
 
     def __str__(self):
         return self.name
@@ -66,16 +66,19 @@ class Medicine(Model):
     name = CharField(max_length=128)
     substance = ManyToManyField(Substance)
     doses = JSONField(default=dict)
-    refundation = DecimalField(max_digits=3, decimal_places=2)
+    refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)
     alerts = ManyToManyField(Alert, blank=True)
     manufacturer = CharField(max_length=128)
-    price_net = DecimalField(max_digits=10, decimal_places=2)
+    price_net = FloatField()
     image = ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def get_brutto_price(self):
+        return self.price_net * 1.08
 
 
 class MedicineInstance(Model):
@@ -106,7 +109,20 @@ class Order(Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.state}'
+        return f'{self.id} - {self.patient.my_user.first_name} {self.patient.my_user.last_name}'
+
+    def get_total_cost(self):
+        price = 0
+        for item in self.medicine_instance.all():
+            if item.medicine.refundation < 100:
+                refundation = ((100 - item.medicine.refundation) / 100) * item.medicine.get_brutto_price()
+                price += item.medicine.get_brutto_price() - refundation
+            else:
+                price += item.medicine.get_brutto_price()
+        discount = (self.discount.amount / 100) * price
+        price -= discount
+        price += self.shipping.price
+        return price
 
 
 class Prescription(Model):

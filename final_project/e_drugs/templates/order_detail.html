@@ -8,9 +8,9 @@
 <div class="row">
     <div class="col">
         <ol class="list-group list-group-flush">
-            {% for med in order.medicine_instance.all %}
+            {% for med_inst in order.medicine_instance.all %}
             <li class="list-group-item">
-                {{ med }}  - {{ med.medicine.price_net }} zł
+                <p>{{ med_inst }}  - {{ med_inst.medicine.get_brutto_price|floatformat:2 }} zł</p>
             </li>
             {% endfor %}
         </ol>
@@ -18,11 +18,13 @@
         <h4>Present state: {{ order.state }}</h4>
     </div>
     <div class="col">
-        <h4>Shipping by {{ order.shipping.name }}: {{order.shipping.price }} zł.</h4>
+        <h4>Shipping by {{ order.shipping.name }}: {{order.shipping.price|floatformat:2 }} zł.</h4>
         <hr>
-        <h4>Discount: {{ order.discount }}</h4>
+        <h4>Discount: {{ order.discount.amount|floatformat:0 }} %</h4>
         <hr>
-        <i><<h5>{{ order.created|date:"d M Y" }}</h5></i>
+        <h4>Total cost: {{ order.get_total_cost|floatformat:2 }} zł</h4>
+        <hr>
+        <i><h5>{{ order.created|date:"d M Y" }}</h5></i>
     </div>
 </div>
 
