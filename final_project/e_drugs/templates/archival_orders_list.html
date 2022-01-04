@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Archival orders
+{% endblock %}
+
+
+{% block content %}
+    <h1>Archival orders for:</h1>
+
+    <h2>{{ patient }}</h2>
+    {% for order in orders %}
+
+    <li class="list-group-item">
+        <h3>{{ order.created|date:"d M Y" }}</h3>
+        <hr>
+        <ol>
+            {% for med in order.medicine_instance.all %}
+            <li>{{ med }}</li>
+            {% endfor %}
+        </ol>
+    </li>
+    {% empty %}
+       <h2>
+           Nothing yet!
+       </h2>
+
+    {% endfor %}
+
+{% endblock %}
