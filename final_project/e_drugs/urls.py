@@ -2,7 +2,8 @@ from django.urls import path
 from .views import medicines, MedicineDetailView, search_medicine, PrescriptionDetailView, PrescriptionUpdateView, \
     PrescriptionCreateView, PrescriptionDeleteView, SideEffectCreateView, SideEffectDetailView, SideEffectUpdateView, \
     SideEffectDeleteView, PrescriptionListView, PrescribedByUserListView, MedicineCreateView, MedicineUpdateView, \
-    MedicineDeteleView, main_page, CurrentOrdersListView, ArchivalOrdersListView, OrdersByStateListView
+    MedicineDeteleView, main_page, CurrentOrdersListView, ArchivalOrdersListView, OrdersByStateListView, \
+    MedicineInstanceCreateView, MedicineInstanceUpdateView, MedicineInstanceDeleteView
 
 urlpatterns = [
     path('prescription-create', PrescriptionCreateView.as_view(), name='prescription-create'),
@@ -28,4 +29,8 @@ urlpatterns = [
     path('current-orders-list/<int:pk>/<str:state>', CurrentOrdersListView.as_view(), name='current-orders'),
     path('archival-orders-list/<int:pk>', ArchivalOrdersListView.as_view(), name='archival-orders'),
     path('orders-list/<str:state>', OrdersByStateListView.as_view(), name='orders-list'),
+
+    path('medicine-instance-create', MedicineInstanceCreateView.as_view(), name='medicine-instance-create'),
+    path('medicine-instance-update/<int:pk>', MedicineInstanceUpdateView.as_view(), name='medicine-instance-update'),
+    path('medicine-instance-delete/<int:pk>', MedicineInstanceDeleteView.as_view(), name='medicine-instance-delete'),
 ]

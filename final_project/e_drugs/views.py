@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm, PrescriptionForm, SideEffectForm
-from .models import Prescription, Medicine, SideEffect, Order
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm
+from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
@@ -78,7 +78,6 @@ class PrescriptionDetailView(DetailView):
         context['filtered'] = valid
 
         return context
-
 
 
 class PrescriptionListView(ListView):
@@ -232,3 +231,21 @@ class OrdersByStateListView(ListView):
 
         return context
 
+
+class MedicineInstanceCreateView(CreateView):
+    form_class = MedicineInstanceForm
+    template_name = 'med_inst_form.html'
+    success_url = reverse_lazy('index')
+
+
+class MedicineInstanceUpdateView(UpdateView):
+    model = MedicineInstance
+    form_class = MedicineInstanceForm
+    template_name = 'med_inst_form.html'
+    success_url = reverse_lazy('index')
+
+
+class MedicineInstanceDeleteView(DeleteView):
+    template_name = 'med_inst_delete.html'
+    model = MedicineInstance
+    success_url = reverse_lazy('index')

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+New medicine instance
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="row">
+        <div class="form-group">
+            {{ form.medicine.errors }}
+            <label for="{{ form.medicine.id_for_label }}">Medicine</label>
+            {{ form.medicine }}
+        </div>
+        <div class="form-group">
+            {{ form.expire_date.errors }}
+            <label for="{{ form.expire_date.id_for_label }}">Expire date</label>
+            {{ form.expire_date }}
+        </div>
+        <div class="form-group">
+            {{ form.code.errors }}
+            <label for="{{ form.code.id_for_label }}">Code</label>
+            {{ form.code }}
+        </div>
+        <div class="form-group">
+            {{ form.is_damaged.errors }}
+             <label for="{{ form.is_damaged.id_for_label }}">Is damaged</label>
+            {{ form.is_damaged }}
+        </div>
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+{% endblock %} 
