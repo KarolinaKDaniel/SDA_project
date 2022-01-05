@@ -10,7 +10,10 @@ Removing medicine instance
         <p>
             Are you sure you want to delete: {{ object.medicine.name }}?
         </p>
+        <p>
+            If yes, let me know why:
+        </p>
+        <textarea name="fulltextarea" cols=40 rows=10 required></textarea>
         <input type="submit" value="Submit" class="btn btn-danger"/>
     </form>
-
 {% endblock %} 

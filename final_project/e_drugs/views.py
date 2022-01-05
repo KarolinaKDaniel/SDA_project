@@ -1,4 +1,5 @@
 import datetime
+from logging import getLogger
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -7,6 +8,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm
 from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
+
+LOGGER = getLogger(__name__)
 
 
 def main_page(request):
@@ -249,3 +252,13 @@ class MedicineInstanceDeleteView(DeleteView):
     template_name = 'med_inst_delete.html'
     model = MedicineInstance
     success_url = reverse_lazy('index')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        data = request.POST['fulltextarea']
+        LOGGER.info(f'Reason to delete {self.object.id}-{self.object.medicine.name}: {data}')
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
