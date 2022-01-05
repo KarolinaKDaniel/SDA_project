@@ -3,22 +3,24 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .forms import PatientForm
+from .forms import PatientRegistrationForm
 
 from .models import Patient, Doctor
+
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
 class PatientCreateView(CreateView):
-    form_class = PatientForm
+    model = Patient
+    form_class = PatientRegistrationForm
     template_name = 'patient_form.html'
     success_url = reverse_lazy('patients')
 
 
 class PatientUpdateView(UpdateView):
-    form_class = PatientForm
     model = Patient
+    form_class = PatientRegistrationForm
     template_name = 'patient_form.html'
     success_url = reverse_lazy('patients')
 
