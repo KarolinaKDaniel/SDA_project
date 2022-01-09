@@ -119,8 +119,9 @@ class Order(Model):
                 price += item.medicine.get_brutto_price() - refundation
             else:
                 price += item.medicine.get_brutto_price()
-        discount = (self.discount.amount / 100) * price
-        price -= discount
+        if self.discount:
+            discount = (self.discount.amount / 100) * price
+            price -= discount
         price += self.shipping.price
         return price
 

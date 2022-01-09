@@ -20,7 +20,11 @@
     <div class="col">
         <h4>Shipping by {{ order.shipping.name }}: {{order.shipping.price|floatformat:2 }} zł.</h4>
         <hr>
+        {% if order.discount %}
         <h4>Discount: {{ order.discount.amount|floatformat:0 }} %</h4>
+        {% else %}
+        <h4>Discount: 0 %
+        {% endif %}
         <hr>
         <h4>Total cost: {{ order.get_total_cost|floatformat:2 }} zł</h4>
         <hr>
