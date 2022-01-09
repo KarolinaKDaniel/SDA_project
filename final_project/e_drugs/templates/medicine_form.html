@@ -11,9 +11,19 @@ Add Medicine
         <h5>Market Name</h5>
         {{ form.name }}
         <h5>Substances</h5>
-        <p>Choose substance and put in the dose in ml</p>
-        {{ form.substance }}
-        {{ form.doses }}
+         <p>Choose substance and put in the dose in ml</p>
+        <div class="row">
+        <div class="col">
+            <div class="form-group">
+                {{ form.substance }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                {{ form.doses }}
+            </div>
+        </div>
+        </div>
         <h5>Refundation</h5>
         <p>Put in the the percent value of the medicine after refundation.<br/>100 means no refundation is aplied.</p>
         {{ form.refundation }}
