@@ -29,11 +29,17 @@
           <ol>
               <hr>
               {% for med in order.medicine_instance.all %}
-              <li>{{ med }}</li>
+                  <li>
+                      {{ med }}
+                  </li>
               {% endfor %}
               <hr>
           </ol>
-        <i>{{ order.created|date:"d M Y" }}</i> <br>
+        <i>
+            <a href="{% url 'order-detail' pk=order.id %}">
+                {{ order.created|date:"d M Y" }}
+            </a>
+        </i> <br>
     </li>
     {% endfor %}
 </ul>

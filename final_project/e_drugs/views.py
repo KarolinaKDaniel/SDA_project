@@ -83,6 +83,7 @@ class PrescriptionDetailView(DetailView):
         return context
 
 
+
 class PrescriptionListView(ListView):
     template_name = 'prescription_list.html'
     model = Prescription
@@ -231,6 +232,22 @@ class OrdersByStateListView(ListView):
         else:
             queryset = None
         context['orders'] = queryset
+
+        return context
+
+
+class OrderDetailView(DetailView):
+    template_name = 'order_detail.html'
+    model = Order
+    context_object_name = 'order'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = Order.objects.get(id=self.kwargs['pk'])
+
+        patient = Patient.objects.get(id=order.patient.id)
+        context['patient'] = patient
+        context['order'] = order
 
         return context
 
