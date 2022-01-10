@@ -1,5 +1,7 @@
-from django.forms import ModelForm, Form
+from django.forms import ModelForm
 from .models import Patient, MyUser
+from betterforms.multiform import MultiModelForm
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class MyUserForm(ModelForm):
@@ -25,18 +27,8 @@ class PatientForm(ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class CombinedFormBase(Form):
-    form_classes = []
-
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        for f in self.form_classes:
-            name = f.__name__.lower()
-            setattr(self, name, f(*args, **kwargs))
-            form = getattr(self, name)
-            self.fields.update(form.fields)
-            self.initial.update(form.initial)
-
-
-class PatientRegistrationForm(CombinedFormBase):
-    form_classes = [MyUserForm, PatientForm]
+class MyUserCreationMultiForm(MultiModelForm):
+    form_class = {
+        'my_user': MyUserForm,
+        'patient': PatientForm,
+    }
