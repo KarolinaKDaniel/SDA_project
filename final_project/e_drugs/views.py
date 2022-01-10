@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -73,12 +74,12 @@ class PrescriptionDetailView(DetailView):
         patient_id = Patient.objects.get(id=prescription.patient.id)
         patient = MyUser.objects.get(username=patient_id.my_user)
         context['patient'] = f'{patient.first_name} {patient.last_name}'
+        context['patient_id'] = int(patient_id.id)
 
         valid = prescription.created + datetime.timedelta(days=prescription.valid)
         context['filtered'] = valid
 
         return context
-
 
 
 class PrescriptionListView(ListView):

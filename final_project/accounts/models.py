@@ -2,10 +2,17 @@ from django.contrib.auth.models import User
 from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
 from e_drugs.models import Affliction
 
+
 class MyUser(User):
     address = CharField(max_length=256)
     phone = CharField(max_length=20)
     Personal_ID = CharField(max_length=20)
+
+    class Meta:
+        permissions = [
+            ("is_doctor", "Can do logged in doctor tasks"),
+            ("is_pharmacist", "Can do logged in pharmacists tasks"),
+        ]
 
 
 class Doctor(Model):
@@ -20,6 +27,7 @@ class Doctor(Model):
     class Meta:
         ordering = ['my_user__last_name']
 
+
 class Patient(Model):
     doctor = ManyToManyField(Doctor, blank=True)
     my_user = OneToOneField(MyUser, on_delete=CASCADE)
@@ -30,6 +38,7 @@ class Patient(Model):
 
     class Meta:
         ordering = ['my_user__last_name']
+
 
 class Pharmacist(Model):
     my_user = OneToOneField(MyUser, on_delete=CASCADE)

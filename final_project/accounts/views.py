@@ -6,8 +6,10 @@ from django.views.generic import ListView, DetailView, CreateView
 
 from .models import Patient, Doctor
 
+
 class CustomLoginView(LoginView):
     template_name = 'login.html'
+
 
 class PatientCreateView(CreateView):
     template_name = 'patient_form.html'
