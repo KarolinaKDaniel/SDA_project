@@ -109,7 +109,7 @@ class Order(Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f'{self.id} - {self.patient.my_user.first_name} {self.patient.my_user.last_name}'
+        return f'{self.id} - {self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}'
 
     def get_total_cost(self):
         price = 0
@@ -142,7 +142,7 @@ class Prescription(Model):
     comment = TextField()
 
     def __str__(self):
-        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.created}'
+        return f'{self.patient.my_user.base_user.first_name} {self.patient.base_user.my_user.last_name}: {self.created}'
 
 
 class SideEffect(Model):
