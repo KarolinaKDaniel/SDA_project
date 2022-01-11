@@ -28,7 +28,7 @@ class Shipping(Model):
 
 
 class Substance(Model):
-    name = CharField(max_length=20)
+    name = CharField(max_length=128)
     is_active = BooleanField(default=True)
     do_not_use_with = ManyToManyField("Substance", blank=True, symmetrical=True)
 
@@ -77,6 +77,9 @@ class Medicine(Model):
     def __str__(self):
         return self.name
 
+    def get_brutto_price(self):
+        return self.price_net * 1.08
+
 
 class MedicineInstance(Model):
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
@@ -106,7 +109,21 @@ class Order(Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f'{self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}: {self.state}'
+        return f'{self.id} - {self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}'
+
+    def get_total_cost(self):
+        price = 0
+        for item in self.medicine_instance.all():
+            if item.medicine.refundation < 100:
+                refundation = ((100 - item.medicine.refundation) / 100) * item.medicine.get_brutto_price()
+                price += item.medicine.get_brutto_price() - refundation
+            else:
+                price += item.medicine.get_brutto_price()
+        if self.discount:
+            discount = (self.discount.amount / 100) * price
+            price -= discount
+        price += self.shipping.price
+        return price
 
 
 class Prescription(Model):
