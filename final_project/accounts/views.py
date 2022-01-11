@@ -2,16 +2,24 @@ from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from .forms import PatientRegistrationForm
+from django.shortcuts import redirect
 
 from .models import Patient, Doctor
+
+class RegisterPatientView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = PatientRegistrationForm
+    success_url = reverse_lazy('index')
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
-class PatientCreateView(CreateView):
-    template_name = 'patient_form.html'
+
+class PatientDeleteView(DeleteView):
     model = Patient
+    template_name = 'patient_delete.html'
     success_url = reverse_lazy('patients')
 
 

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Removing
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            Are you sure you want to delete patient: {{ patient.my_user.first_name }} {{ patient.my_user.last_name }}?
+        </p>
+        <input type="submit" value="Submit" class="btn btn-danger"/>
+    </form>
+
+{% endblock %}
