@@ -3,33 +3,18 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
-from .forms import MyUserCreationMultiForm
+from .forms import PatientRegistrationForm
 from django.shortcuts import redirect
 
 from .models import Patient, Doctor
 
+class RegisterPatientView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = PatientRegistrationForm
+    success_url = reverse_lazy('index')
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
-
-class PatientCreateView(CreateView):
-    form_class = MyUserCreationMultiForm
-    template_name = 'patient_form.html'
-    success_url = reverse_lazy('patients')
-
-    def form_valid(self, form):
-        my_user = form['my_user'].save()
-        patient = form['patient'].save(commit=False)
-        patient.my_user = my_user
-        patient.save()
-        return redirect(self.get_success_url())
-
-
-# class PatientUpdateView(UpdateView):
-#     model = Patient
-#     form_class = PatientRegistrationForm
-#     template_name = 'patient_form.html'
-#     success_url = reverse_lazy('patients')
 
 
 class PatientDeleteView(DeleteView):
