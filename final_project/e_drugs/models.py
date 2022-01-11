@@ -66,8 +66,8 @@ class Medicine(Model):
         ('solution', 'solution')
     ]
     name = CharField(max_length=128)
-    substance = ManyToManyField(Substance)
-    doses = JSONField()
+    substance = ForeignKey(Substance, on_delete=DO_NOTHING)
+    dose = IntegerField()
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)
