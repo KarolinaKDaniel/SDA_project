@@ -1,0 +1,77 @@
+html {
+  scroll-behavior: smooth
+}
+
+body {
+    background-color: white;
+}
+
+
+h1 {
+    font-size: 36px;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+
+nav {
+    background-color: #00CC99;
+    position: fixed;
+    width: 100%;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+   background-color: aquamarine;
+   border-color: aquamarine;
+   border-radius: 20px;
+   }
+
+.btn {
+  width: 70px;
+  background: none;
+  border: 3px solid;
+  border-radius: 10px;
+}
+
+.form-control {
+   height: 50px;
+   width:400px;
+}
+
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-between;
+    width: 5%;
+}
+
+.nav-links a {
+    transition: .3s all;
+    color: white;
+}
+
+.nav-links a:hover {
+    transform: scale(1.2);
+    border: 3px solid aquamarine;
+    border-radius: 30px;
+}
+
