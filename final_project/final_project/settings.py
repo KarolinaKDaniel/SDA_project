@@ -129,7 +129,7 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'why_is_deleted.log',
+            'filename': 'deletion_history.log',
             'level': 'INFO',
             'formatter': 'verbose',
         },

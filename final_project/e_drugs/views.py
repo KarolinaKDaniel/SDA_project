@@ -1,6 +1,7 @@
 import datetime
 from logging import getLogger
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -81,7 +82,6 @@ class PrescriptionDetailView(DetailView):
         context['filtered'] = valid
 
         return context
-
 
 
 class PrescriptionListView(ListView):
@@ -257,6 +257,17 @@ class MedicineInstanceCreateView(CreateView):
     template_name = 'med_inst_form.html'
     success_url = reverse_lazy('index')
 
+    def form_valid(self, form):
+        how_many = form.cleaned_data["quantity"]
+        for i in range(how_many):
+            product = MedicineInstance(
+                medicine=form.medicine,
+                expire_date=form.expire_date,
+                code=form.code
+            )
+            product.save()
+        return self.get_success_url()
+
 
 class MedicineInstanceUpdateView(UpdateView):
     model = MedicineInstance
@@ -271,10 +282,13 @@ class MedicineInstanceDeleteView(DeleteView):
     success_url = reverse_lazy('index')
 
     def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user = request.user
         self.object = self.get_object()
         form = self.get_form()
         data = request.POST['fulltextarea']
-        LOGGER.info(f'Reason to delete {self.object.id}-{self.object.medicine.name}: {data}')
+        LOGGER.info(f'Id: {self.object.id}-{self.object.medicine.name}:{self.object.code} '
+                    f'is deleted by id:{user.id} {user.first_name} {user.last_name} with reason: {data}')
         if form.is_valid():
             return self.form_valid(form)
         else:
