@@ -2,6 +2,7 @@ import datetime
 from logging import getLogger
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -261,12 +262,12 @@ class MedicineInstanceCreateView(CreateView):
         how_many = form.cleaned_data["quantity"]
         for i in range(how_many):
             product = MedicineInstance(
-                medicine=form.medicine,
-                expire_date=form.expire_date,
-                code=form.code
+                medicine=form.cleaned_data['medicine'],
+                expire_date=form.cleaned_data['expire_date'],
+                code=form.cleaned_data['code']
             )
             product.save()
-        return self.get_success_url()
+        return HttpResponse(reverse_lazy('index'))
 
 
 class MedicineInstanceUpdateView(UpdateView):

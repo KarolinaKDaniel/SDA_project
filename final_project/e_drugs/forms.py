@@ -1,9 +1,5 @@
-import json
-
-from django.forms import ModelForm, NumberInput
-from django.db.models import IntegerField, CharField, DateField
-from django.template.loader import render_to_string
-
+from django.forms import ModelForm, IntegerField
+from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
 
 
@@ -45,13 +41,8 @@ class MedicineInstanceForm(ModelForm):
     class Meta:
         model = MedicineInstance
         fields = '__all__'
-        widgets = {
-            'quantity': NumberInput
-        }
-    # quantity = IntegerField()
-    # medicine = CharField()
-    # code = CharField()
-    # expire_date = DateField()
+
+    quantity = IntegerField(widget=NumberInput, min_value=1)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
