@@ -132,6 +132,12 @@ class PrescriptionCreateView(CreateView):
     template_name = 'prescription_form.html'
     success_url = reverse_lazy('index')
 
+    def get_initial(self):
+        initial = super(PrescriptionCreateView, self).get_initial()
+        if self.request.user.is_authenticated:
+            initial.update({'prescribed_by': self.request.user.id})
+        return initial
+
 
 class PrescriptionUpdateView(UpdateView):
     model = Prescription

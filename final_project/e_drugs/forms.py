@@ -1,6 +1,6 @@
 import json
 
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
 from django.template.loader import render_to_string
 
 from .models import Medicine, Prescription, SideEffect
@@ -24,6 +24,7 @@ class PrescriptionForm(ModelForm):
         model = Prescription
         fields = '__all__'
         exclude = ['is_used']
+        widgets = {'prescribed_by': HiddenInput}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
