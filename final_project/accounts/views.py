@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from .models import Patient, Doctor
 
 class RegisterPatientView(CreateView):
-    template_name = 'patient_form.html'
+    template_name = 'patient_alt.html'
     form_class = PatientRegistrationForm
     success_url = reverse_lazy('index')
 
