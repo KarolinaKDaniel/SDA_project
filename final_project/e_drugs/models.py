@@ -106,7 +106,7 @@ class Order(Model):
         ordering = ['-created']
 
     def __str__(self):
-        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.state}'
+        return f'{self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}: {self.state}'
 
 
 class Prescription(Model):
@@ -125,7 +125,7 @@ class Prescription(Model):
     comment = TextField()
 
     def __str__(self):
-        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.created}'
+        return f'{self.patient.my_user.base_user.first_name} {self.patient.base_user.my_user.last_name}: {self.created}'
 
 
 class SideEffect(Model):
