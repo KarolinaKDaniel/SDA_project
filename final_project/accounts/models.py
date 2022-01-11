@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
 from e_drugs.models import Affliction
 
-
-class MyUser(User):
+class MyUser(Model):
+    base_user = OneToOneField(User, on_delete=CASCADE)
     address = CharField(max_length=256)
     phone = CharField(max_length=20)
     Personal_ID = CharField(max_length=20)
@@ -22,10 +22,10 @@ class Doctor(Model):
     photo = ImageField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.my_user.last_name} {self.my_user.first_name}'
+        return f'{self.my_user.base_user.last_name} {self.my_user.base_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__last_name']
+        ordering = ['my_user__base_user__last_name']
 
 
 class Patient(Model):
@@ -37,7 +37,7 @@ class Patient(Model):
         return f'{self.my_user.last_name} {self.my_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__last_name']
+        ordering = ['my_user__base_user__last_name']
 
 
 class Pharmacist(Model):
@@ -48,4 +48,4 @@ class Pharmacist(Model):
         return f'{self.my_user.last_name} {self.my_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__last_name']
+        ordering = ['my_user__base_user__last_name']
