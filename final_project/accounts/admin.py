@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+
 from .models import MyUser, Doctor, Pharmacist, Patient
 
 # Register your models here.
