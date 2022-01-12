@@ -1,12 +1,24 @@
-from django.forms import ModelForm, IntegerField
 from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
+from django.forms import ModelForm, MultipleHiddenInput, MultipleChoiceField, NumberInput, TextInput, ModelChoiceField, \
+    Select, DecimalField, ModelMultipleChoiceField, IntegerField
+
+from django.forms import ModelForm
+
+from .models import Medicine, Prescription, SideEffect, Substance
 
 
 class MedicineForm(ModelForm):
     class Meta:
         model = Medicine
         fields = '__all__'
+        widgets = {
+            'substance': Select()
+        }
+
+    refundation = DecimalField(min_value=0, max_value=100, decimal_places=2)
+    price_net = DecimalField(min_value=0, decimal_places=2)
+    dose = IntegerField(widget=NumberInput, min_value=0)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
