@@ -1,7 +1,6 @@
 from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
-from django.forms import ModelForm, MultipleHiddenInput, MultipleChoiceField, NumberInput, TextInput, ModelChoiceField, \
-    Select, DecimalField, ModelMultipleChoiceField, IntegerField
+from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField
 
 from django.forms import ModelForm
 

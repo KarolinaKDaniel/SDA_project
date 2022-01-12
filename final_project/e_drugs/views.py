@@ -2,7 +2,7 @@ import datetime
 from logging import getLogger
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -256,7 +256,6 @@ class OrderDetailView(DetailView):
 class MedicineInstanceCreateView(CreateView):
     form_class = MedicineInstanceForm
     template_name = 'med_inst_form.html'
-    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         how_many = form.cleaned_data["quantity"]
@@ -267,7 +266,7 @@ class MedicineInstanceCreateView(CreateView):
                 code=form.cleaned_data['code']
             )
             product.save()
-        return HttpResponse(reverse_lazy('index'))
+        return HttpResponseRedirect(reverse_lazy('index'))
 
 
 class MedicineInstanceUpdateView(UpdateView):
