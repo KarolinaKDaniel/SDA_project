@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -10,18 +11,27 @@ from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
 def main_page(request):
-    return render(request, template_name='main_page.html')
+    return render(request, template_name='main_page.html', context={'medicines': Medicine.objects.all()})
 
 
 def medicines(request):
-    sorting = request.GET.get('s', 'default')
-    if sorting == "name":
+    page = request.GET.get('s', 'page')
+    if page == "name":
         drugs_list = Medicine.objects.all().order_by("name")
-    elif sorting == "price_net":
+    elif page == "price_net":
         drugs_list = Medicine.objects.all().order_by("price_net")
     else:
         drugs_list = Medicine.objects.all()
-    return render(request, template_name='medicines.html', context={'medicines': drugs_list})
+    paginator = Paginator(drugs_list, 2)
+    try:
+        meds = paginator.page(page)
+    except PageNotAnInteger:
+        meds = paginator.page(1)
+    except EmptyPage:
+        meds = paginator.page(paginator.num_pages)
+
+    return render(request, template_name='medicines.html', context={'medicines': drugs_list,
+                                                                    'meds': meds})
 
 
 def search_medicine(request):
@@ -78,7 +88,6 @@ class PrescriptionDetailView(DetailView):
         context['filtered'] = valid
 
         return context
-
 
 
 class PrescriptionListView(ListView):
@@ -247,4 +256,3 @@ class OrderDetailView(DetailView):
         context['order'] = order
 
         return context
-

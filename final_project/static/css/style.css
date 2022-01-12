@@ -35,6 +35,10 @@ nav a {
     text-decoration: none;
 }
 
+.d-flex {
+    margin-block-end: 0rem;
+    }
+
 .dropdown-menu {
    background-color: aquamarine;
    border-color: aquamarine;
@@ -70,8 +74,33 @@ nav a {
 }
 
 .nav-links a:hover {
-    transform: scale(1.2);
-    border: 3px solid aquamarine;
+    /*transform: scale(1.2);*/
+    border: 3px solid gold;
     border-radius: 30px;
+    background-color: gold;
 }
 
+.offer-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.offer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    margin: auto;
+    transition: .5s all;
+}
+.offer-box a {
+    color: brown;
+    text-decoration: none;
+}
+
+.offer-box:hover {
+    transform: scale(1.5);
+    background: aqua;
+    border-radius: 20px;
+    }

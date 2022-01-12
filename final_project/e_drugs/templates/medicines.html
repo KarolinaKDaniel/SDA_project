@@ -8,16 +8,16 @@ Medicines
 {% block content %}
 <h1>Medicines</h1>
 
-<form class="d-flex" method=POST action="{% url 'search-medicine' %}">
-    {% csrf_token %}
-    <div class="col-xs-2">
-        <input class="form-control me-2" type="search" placeholder="Active substance" aria-label="Search"
-               name="searched">
-    </div>
-    <button class="btn btn-outline-success" type="submit">
-        Search
-    </button>
-</form>
+<!--<form class="d-flex" method=POST action="{% url 'search-medicine' %}">-->
+<!--    {% csrf_token %}-->
+<!--    <div class="col-xs-2">-->
+<!--        <input class="form-control me-2" type="search" placeholder="Active substance" aria-label="Search"-->
+<!--               name="searched">-->
+<!--    </div>-->
+<!--    <button class="btn btn-outline-success" type="submit">-->
+<!--        Search-->
+<!--    </button>-->
+<!--</form>-->
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
 {% if searched or medicines %}
