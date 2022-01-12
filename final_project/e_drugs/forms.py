@@ -1,9 +1,8 @@
-from django.forms import ModelForm, MultipleHiddenInput, MultipleChoiceField, NumberInput, TextInput, ModelChoiceField, \
-    Select, DecimalField, ModelMultipleChoiceField, IntegerField
-from .form_utils import CustomDoseField, CustomDoseWidget
+from django.forms.widgets import NumberInput
+from .models import Medicine, Prescription, SideEffect, MedicineInstance
+from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField
 
 from django.forms import ModelForm
-from django.template.loader import render_to_string
 
 from .models import Medicine, Prescription, SideEffect, Substance
 
@@ -25,12 +24,8 @@ class MedicineForm(ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    def clean(self):
-        pass
-
 
 class PrescriptionForm(ModelForm):
-
     class Meta:
         model = Prescription
         fields = '__all__'
@@ -43,10 +38,22 @@ class PrescriptionForm(ModelForm):
 
 
 class SideEffectForm(ModelForm):
-
     class Meta:
         model = SideEffect
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class MedicineInstanceForm(ModelForm):
+    class Meta:
+        model = MedicineInstance
+        fields = '__all__'
+
+    quantity = IntegerField(widget=NumberInput, min_value=1)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
