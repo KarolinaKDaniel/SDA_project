@@ -2,7 +2,10 @@ from django.forms import ModelForm, MultipleHiddenInput, MultipleChoiceField, Nu
     Select, DecimalField, ModelMultipleChoiceField, IntegerField
 from .form_utils import CustomDoseField, CustomDoseWidget
 
-from .models import Medicine, Substance
+from django.forms import ModelForm
+from django.template.loader import render_to_string
+
+from .models import Medicine, Prescription, SideEffect, Substance
 
 
 class MedicineForm(ModelForm):
@@ -24,3 +27,28 @@ class MedicineForm(ModelForm):
 
     def clean(self):
         pass
+
+
+class PrescriptionForm(ModelForm):
+
+    class Meta:
+        model = Prescription
+        fields = '__all__'
+        exclude = ['is_used']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class SideEffectForm(ModelForm):
+
+    class Meta:
+        model = SideEffect
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

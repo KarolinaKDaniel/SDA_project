@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    All orders
+{% endblock %}
+
+
+{% block content %}
+<h1>All orders:</h1>
+
+<a class="btn btn-info" href="{% url 'orders-list' state='accepted' %}">
+    Accepted
+</a>
+<a class="btn btn-info" href="{% url 'orders-list' state='paid' %}">
+    Paid
+</a>
+<a class="btn btn-info" href="{% url 'orders-list' state='processed' %}">
+    Processed
+</a>
+<a class="btn btn-info" href="{% url 'orders-list' state='shipped' %}">
+    Shipped
+</a>
+
+<ul class="list-group list-group-flush">
+    {% for order in orders %}
+    <li class="list-group-item">
+        <h4>{{ order.patient }} ordered:</h4>
+
+          <ol>
+              <hr>
+              {% for med in order.medicine_instance.all %}
+                  <li>
+                      {{ med }}
+                  </li>
+              {% endfor %}
+              <hr>
+          </ol>
+        <i>
+            <a href="{% url 'order-detail' pk=order.id %}">
+                {{ order.created|date:"d M Y" }}
+            </a>
+        </i> <br>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

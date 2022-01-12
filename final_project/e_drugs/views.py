@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm
-from .models import Prescription, Medicine
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm
+from .models import Prescription, Medicine, SideEffect, Order
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
@@ -42,6 +42,12 @@ class MedicineCreateView(CreateView):
     success_url = reverse_lazy('medicines-all')
 
 
+class MedicineDetailView(DetailView):
+    template_name = 'medicine_detail.html'
+    model = Medicine
+    context_object_name = 'medicine'
+
+
 class MedicineUpdateView(UpdateView):
     model = Medicine
     form_class = MedicineForm
@@ -73,11 +79,6 @@ class PrescriptionDetailView(DetailView):
 
         return context
 
-
-class MedicineDetailView(DetailView):
-    template_name = 'medicine_detail.html'
-    model = Medicine
-    context_object_name = 'medicine'
 
 
 class PrescriptionListView(ListView):
@@ -123,3 +124,127 @@ class PrescribedByUserListView(ListView):
 
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
         return context
+
+
+class PrescriptionCreateView(CreateView):
+    form_class = PrescriptionForm
+    template_name = 'prescription_form.html'
+    success_url = reverse_lazy('index')
+
+
+class PrescriptionUpdateView(UpdateView):
+    model = Prescription
+    form_class = PrescriptionForm
+    template_name = 'prescription_form.html'
+    success_url = reverse_lazy('index')
+
+
+class PrescriptionDeleteView(DeleteView):
+    template_name = 'prescription_delete.html'
+    model = Prescription
+    success_url = reverse_lazy('index')
+
+
+class SideEffectCreateView(CreateView):
+    form_class = SideEffectForm
+    template_name = 'side_effect_form.html'
+    success_url = reverse_lazy('index')
+
+
+class SideEffectDetailView(DetailView):
+    template_name = 'side_effect_detail.html'
+    model = SideEffect
+    context_object_name = 'side_effect'
+
+
+class SideEffectUpdateView(UpdateView):
+    model = SideEffect
+    form_class = SideEffectForm
+    template_name = 'side_effect_form.html'
+    success_url = reverse_lazy('index')
+
+
+class SideEffectDeleteView(DeleteView):
+    template_name = 'side_effect_delete.html'
+    model = SideEffect
+    success_url = reverse_lazy('index')
+
+
+class CurrentOrdersListView(ListView):
+    template_name = 'current_orders_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        state, pk = self.kwargs['state'], self.kwargs['pk']
+        patient = Patient.objects.get(id=pk)
+
+        if state == 'accepted':
+            queryset = Order.objects.filter(patient=patient, state='accepted')
+        elif state == 'paid':
+            queryset = Order.objects.filter(patient=patient, state='paid')
+        elif state == 'processed':
+            queryset = Order.objects.filter(patient=patient, state='processed')
+        elif state == 'shipped':
+            queryset = Order.objects.filter(patient=patient, state='shipped')[:1]
+        else:
+            queryset = None
+        context['orders'] = queryset
+
+        return context
+
+
+class ArchivalOrdersListView(ListView):
+    template_name = 'archival_orders_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        patient = Patient.objects.get(id=self.kwargs['pk'])
+
+        archival_order_list = Order.objects.filter(state='shipped', patient=patient)
+
+        context['orders'] = archival_order_list
+        context['patient'] = patient
+
+        return context
+
+
+class OrdersByStateListView(ListView):
+    template_name = 'orders_by_state_list.html'
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        state = self.kwargs['state']
+
+        if state == 'accepted':
+            queryset = Order.objects.filter(state='accepted')
+        elif state == 'paid':
+            queryset = Order.objects.filter(state='paid')
+        elif state == 'processed':
+            queryset = Order.objects.filter(state='processed')
+        elif state == 'shipped':
+            queryset = Order.objects.filter(state='shipped')
+        else:
+            queryset = None
+        context['orders'] = queryset
+
+        return context
+
+
+class OrderDetailView(DetailView):
+    template_name = 'order_detail.html'
+    model = Order
+    context_object_name = 'order'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = Order.objects.get(id=self.kwargs['pk'])
+
+        patient = Patient.objects.get(id=order.patient.id)
+        context['patient'] = patient
+        context['order'] = order
+
+        return context
+

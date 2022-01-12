@@ -29,16 +29,15 @@ class Shipping(Model):
 
 
 class Substance(Model):
-    name = CharField(max_length=20)
+    name = CharField(max_length=128)
     is_active = BooleanField(default=True)
     do_not_use_with = ManyToManyField("Substance", blank=True, symmetrical=True)
 
     class Meta:
-        ordering = ('name', )
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
-
 
 
 class Affliction(Model):
@@ -79,6 +78,9 @@ class Medicine(Model):
     def __str__(self):
         return self.name
 
+    def get_brutto_price(self):
+        return self.price_net * 1.08
+
 
 class MedicineInstance(Model):
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
@@ -98,11 +100,31 @@ class Order(Model):
         ('shipped', 'shipped'),
     )
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
-    medicine_instance = ManyToManyField(MedicineInstance)
+    medicine_instance = ManyToManyField(MedicineInstance, related_name="med_inst")
     created = DateTimeField(auto_now_add=True)
     state = CharField(max_length=9, choices=CHOICES)
     shipping = ForeignKey(Shipping, on_delete=DO_NOTHING)
     discount = ForeignKey(Discount, on_delete=DO_NOTHING, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __str__(self):
+        return f'{self.id} - {self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}'
+
+    def get_total_cost(self):
+        price = 0
+        for item in self.medicine_instance.all():
+            if item.medicine.refundation < 100:
+                refundation = ((100 - item.medicine.refundation) / 100) * item.medicine.get_brutto_price()
+                price += item.medicine.get_brutto_price() - refundation
+            else:
+                price += item.medicine.get_brutto_price()
+        if self.discount:
+            discount = (self.discount.amount / 100) * price
+            price -= discount
+        price += self.shipping.price
+        return price
 
 
 class Prescription(Model):
@@ -121,11 +143,10 @@ class Prescription(Model):
     comment = TextField()
 
     def __str__(self):
-        return f'{self.patient.my_user.first_name} {self.patient.my_user.last_name}: {self.created}'
+        return f'{self.patient.my_user.base_user.first_name} {self.patient.base_user.my_user.last_name}: {self.created}'
+
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
     what_effect = TextField()
-
-
