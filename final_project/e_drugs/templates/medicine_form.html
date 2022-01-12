@@ -8,7 +8,37 @@ Add Medicine
     <h1>Add Medicine</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_table }}
+        <h5>Market Name</h5>
+        {{ form.name }}
+        <h5>Substances</h5>
+         <p>Choose substance and put in the dose in ml</p>
+        <div class="row">
+        <div class="col">
+            <div class="form-group">
+                {{ form.substance }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                {{ form.dose }}
+            </div>
+        </div>
+        </div>
+        <h5>Refundation</h5>
+        <p>Put in the the percent value of the medicine after refundation.<br/>100 means no refundation is aplied.</p>
+        {{ form.refundation }}
+        <h5>Prescription requied</h5>
+        {{ form.need_prescription }}
+        <h5>Form</h5>
+        {{ form.form }}
+        <h5>Alerts</h5>
+        {{ form.alerts }}
+        <h5>Manufacturer</h5>
+        {{ form.manufacturer }}
+        <h5>Input net price</h5>
+        {{ form.price_net }}
+        <h5>Add photo</h5>
+        {{ form.image }}
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 {% endblock %}
