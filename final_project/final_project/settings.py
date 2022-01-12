@@ -26,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,3 +122,27 @@ STATICFILES_DIRS = (
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'deletion_history.log',
+            'level': 'INFO',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'e_drugs.views': {
+            'level': 'INFO',
+            'handlers': ['file'],
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(name)s %(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+}

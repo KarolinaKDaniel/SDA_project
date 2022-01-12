@@ -1,13 +1,18 @@
 import datetime
+from logging import getLogger
 
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm, PrescriptionForm, SideEffectForm
-from .models import Prescription, Medicine, SideEffect, Order
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm
+from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
+
+LOGGER = getLogger(__name__)
 
 
 def main_page(request):
@@ -255,3 +260,44 @@ class OrderDetailView(DetailView):
 
         return context
 
+
+class MedicineInstanceCreateView(CreateView):
+    form_class = MedicineInstanceForm
+    template_name = 'med_inst_form.html'
+
+    def form_valid(self, form):
+        how_many = form.cleaned_data["quantity"]
+        for i in range(how_many):
+            product = MedicineInstance(
+                medicine=form.cleaned_data['medicine'],
+                expire_date=form.cleaned_data['expire_date'],
+                code=form.cleaned_data['code']
+            )
+            product.save()
+        return HttpResponseRedirect(reverse_lazy('index'))
+
+
+class MedicineInstanceUpdateView(UpdateView):
+    model = MedicineInstance
+    form_class = MedicineInstanceForm
+    template_name = 'med_inst_form.html'
+    success_url = reverse_lazy('index')
+
+
+class MedicineInstanceDeleteView(DeleteView):
+    template_name = 'med_inst_delete.html'
+    model = MedicineInstance
+    success_url = reverse_lazy('index')
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user = request.user
+        self.object = self.get_object()
+        form = self.get_form()
+        data = request.POST['fulltextarea']
+        LOGGER.info(f'Id: {self.object.id}-{self.object.medicine.name}:{self.object.code} '
+                    f'is deleted by id:{user.id} {user.first_name} {user.last_name} with reason: {data}')
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)

@@ -1,5 +1,6 @@
 from django.db.models import Model, CharField, TextField, BooleanField, ManyToManyField, FloatField, ForeignKey, \
     DateField, DO_NOTHING, JSONField, ImageField, DateTimeField, IntegerField
+from .form_utils import CustomDoseField
 
 
 class Alert(Model):
@@ -64,8 +65,8 @@ class Medicine(Model):
         ('solution', 'solution')
     ]
     name = CharField(max_length=128)
-    substance = ManyToManyField(Substance)
-    doses = JSONField(default=dict)
+    substance = ForeignKey(Substance, on_delete=DO_NOTHING)
+    dose = IntegerField()
     refundation = FloatField()
     need_prescription = BooleanField()
     form = CharField(choices=CHOICES, max_length=15)
@@ -84,7 +85,6 @@ class Medicine(Model):
 class MedicineInstance(Model):
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
     expire_date = DateField()
-    is_damaged = BooleanField(default=False)
     code = CharField(max_length=64)
 
     def __str__(self):
@@ -143,7 +143,6 @@ class Prescription(Model):
 
     def __str__(self):
         return f'{self.patient.my_user.base_user.first_name} {self.patient.base_user.my_user.last_name}: {self.created}'
-
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)

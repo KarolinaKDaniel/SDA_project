@@ -29,9 +29,9 @@ class Doctor(Model):
 
 
 class Patient(Model):
-    doctor = ManyToManyField(Doctor, blank=True, null=True)
+    doctor = ManyToManyField(Doctor, blank=True)
     my_user = OneToOneField(MyUser, on_delete=CASCADE)
-    affliction = ManyToManyField(Affliction, blank=True, null=True)
+    affliction = ManyToManyField(Affliction, blank=True)
 
     def __str__(self):
         return f'{self.my_user.base_user.last_name} {self.my_user.base_user.first_name}'
