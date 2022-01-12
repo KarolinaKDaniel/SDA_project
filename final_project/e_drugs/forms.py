@@ -2,8 +2,6 @@ from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
 from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField
 
-from django.forms import ModelForm
-
 from .models import Medicine, Prescription, SideEffect, Substance
 
 
@@ -30,6 +28,7 @@ class PrescriptionForm(ModelForm):
         model = Prescription
         fields = '__all__'
         exclude = ['is_used']
+        widgets = {'prescribed_by': HiddenInput}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

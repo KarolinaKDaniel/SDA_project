@@ -3,6 +3,13 @@
 {% block content %}
 
 <h1>{{ patient }}</h1>
+
+{% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+<h6>
+    <a href="{% url 'prescription-list' valid=True pk=2 %}">All prescriptions of {{ patient }}</a>
+</h6>
+{% endif %}
+
 {% if filtered|date:"YmdHis" > now|date:"YmdHis" %}
     <p>
         Prescription expire date: {{ filtered|date:"M d, Y" }}
@@ -28,4 +35,11 @@
 
 <h3>was used: {{ prescription.is_used }}</h3>
 <p>Prescribed by: {{ prescription.prescribed_by }}</p>
+
+{% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+<a class="btn btn-primary" href="{% url 'prescription-update' pk=prescription.id %}">Edit Prescription</a>
+{% endif %}
+{% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+<a class="btn btn-danger" href="{% url 'prescription-delete' pk=prescription.id %}">Delete Prescription</a>
+{% endif %}
 {% endblock %}
