@@ -18,7 +18,7 @@ class MedicineForm(ModelForm):
 
     refundation = DecimalField(min_value=0, max_value=100, decimal_places=2)
     price_net = DecimalField(min_value=0, decimal_places=2)
-    doses = IntegerField(widget=NumberInput, min_value=0)
+    dose = IntegerField(widget=NumberInput, min_value=0)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
