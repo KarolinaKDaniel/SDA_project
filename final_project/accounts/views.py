@@ -37,6 +37,7 @@ class RegisterPatientView(CreateView):
     form_class = PatientRegistrationForm
     success_url = reverse_lazy('index')
 
+
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 

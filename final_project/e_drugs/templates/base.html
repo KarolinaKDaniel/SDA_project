@@ -30,6 +30,11 @@
                 <a class="nav-item nav-link active" href="{% url 'doctors-all' %}">
                     Doctors
                 </a>
+                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
+                    Create Prescription
+                </a>
+                {% endif %}
              </div>
         </div>
          <div class="navbar-nav ml-auto">
@@ -40,6 +45,12 @@
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
             <div class="dropdown-menu dropdown-menu-right">
+
+                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                <a class="dropdown-item text-right" href="#">Profile</a>
+                <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All Prescriptions</a>
+                {% endif %}
+
                 <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
             </div>
             {% else %}
