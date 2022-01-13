@@ -55,9 +55,10 @@
         <!--            </a>-->
         <!--        </div>-->
         <!--    </div>-->
-        <form class="d-flex">
+        <form class="d-flex"  method=POST action="{% url 'search-medicine' %}">
+            {% csrf_token %}
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit" name="searched">Search</button>
         </form>
         <form class="d-flex">
             <button class="btn btn-outline-success" type="submit">Koszyk</button>

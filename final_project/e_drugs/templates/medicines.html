@@ -20,7 +20,7 @@ Medicines
 <!--</form>-->
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
 <a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
-{% if searched or medicines %}
+{% if medicines or searched %}
 <ul class="list-group list-group-flush">
     {% for med in medicines %}
     <li class="list-group-item"><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
@@ -36,5 +36,6 @@ Medicines
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>
     {% endfor %}
 </ul>
+{% include "pagination.html" with page=medicines %}
 {% endif %}
 {% endblock %}

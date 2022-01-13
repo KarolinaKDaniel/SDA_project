@@ -3,12 +3,21 @@ html {
 }
 
 body {
-    background-color: white;
+    background-color: WhiteSmoke;
 }
+
 
 
 h1 {
     font-size: 36px;
+    color: #00ff00;
+}
+
+.borderh {
+    border: 3px solid #00ff00;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
 
 .container {
@@ -68,9 +77,13 @@ nav a {
     width: 5%;
 }
 
-.nav-links a {
-    transition: .3s all;
-    color: white;
+.navbar a {
+  float: left;
+  text-align: center;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
 }
 
 .nav-links a:hover {
@@ -104,3 +117,18 @@ nav a {
     background: aqua;
     border-radius: 20px;
     }
+
+
+.jumbotron {
+  background-color: paleturquoise;
+}
+
+section {
+     margin-bottom: 80px;
+     }
+
+.pagination {
+    margin:40px auto;
+    font-weight:bold;
+}
+

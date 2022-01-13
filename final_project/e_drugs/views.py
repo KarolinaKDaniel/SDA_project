@@ -11,27 +11,28 @@ from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 
 def main_page(request):
-    return render(request, template_name='main_page.html', context={'medicines': Medicine.objects.all()})
+    return render(request, template_name='main_page.html', context={'medicines': Medicine.objects.all(),
+                                                                    'doctors': Doctor.objects.all()})
 
 
 def medicines(request):
-    page = request.GET.get('s', 'page')
-    if page == "name":
+    sorting = request.GET.get('s', 'default')
+    if sorting == "name":
         drugs_list = Medicine.objects.all().order_by("name")
-    elif page == "price_net":
+    elif sorting == "price_net":
         drugs_list = Medicine.objects.all().order_by("price_net")
     else:
         drugs_list = Medicine.objects.all()
-    paginator = Paginator(drugs_list, 2)
+    paginator = Paginator(drugs_list, 3)
+    page = request.GET.get('page')
     try:
         meds = paginator.page(page)
     except PageNotAnInteger:
         meds = paginator.page(1)
     except EmptyPage:
         meds = paginator.page(paginator.num_pages)
-
-    return render(request, template_name='medicines.html', context={'medicines': drugs_list,
-                                                                    'meds': meds})
+    return render(request, template_name='medicines.html', context={'medicines': meds,
+                                                                    'page': page})
 
 
 def search_medicine(request):
@@ -41,6 +42,7 @@ def search_medicine(request):
             substance__name__contains=searched,
             substance__is_active=True
         )
+
         return render(request, template_name='medicines.html',
                       context={"searched": searched,
                                "medicines": medicines})
