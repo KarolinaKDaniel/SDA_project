@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
+from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField, BooleanField
 from e_drugs.models import Affliction
 
 class MyUser(Model):
@@ -7,6 +7,8 @@ class MyUser(Model):
     address = CharField(max_length=256)
     phone = CharField(max_length=20)
     Personal_ID = CharField(max_length=20)
+    email_confirmed = BooleanField(default=False)
+    reset_password = BooleanField(default=False)
 
 
 class Doctor(Model):

@@ -1,9 +1,14 @@
 from django.forms import ModelForm, CharField, TextInput, Textarea, ModelMultipleChoiceField, MultipleHiddenInput
 from django.contrib.auth.forms import UserCreationForm
+from django.template.loader import get_template
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from .models import Patient, MyUser, Doctor
 from e_drugs.models import Affliction
 from django.contrib.auth.models import User
 from django.db.transaction import atomic
+from .tokens import account_activation_token
 
 
 class PatientRegistrationForm(UserCreationForm):
@@ -30,7 +35,6 @@ class PatientRegistrationForm(UserCreationForm):
         phone = self.cleaned_data['phone']
         Personal_ID = self.cleaned_data['Personal_ID']
         affliction = self.cleaned_data['affliction']
-        print(affliction)
         doctor = self.cleaned_data['doctor']
         my_user = MyUser(base_user=user, address=address, phone=phone, Personal_ID=Personal_ID)
         if commit:
@@ -42,4 +46,13 @@ class PatientRegistrationForm(UserCreationForm):
                 patient.doctor.add(doc)
             for afflic in affliction:
                 patient.affliction.add(afflic)
+        html_email_template = get_template('account_activation_email.html')
+        d = {'username': user.username,
+             'uid': urlsafe_base64_encode(force_bytes(my_user.pk)),
+             'token': account_activation_token.make_token(my_user),}
+        subject, from_email, to = 'welcome', 'test@test.pl', user.email
+        html_content = html_email_template.render(d)
+        msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
         return user
