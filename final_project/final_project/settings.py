@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'e_drugs',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,5 @@ LOGGING = {
         },
     },
 }
+
+CART_SESSION_ID = 'cart'
