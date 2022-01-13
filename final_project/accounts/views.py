@@ -13,20 +13,20 @@ from .tokens import account_activation_token
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 
-from .models import Patient, Doctor, User
+from .models import Patient, Doctor, User, MyUser
 
 
 class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
+            user = MyUser.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
         if user is not None and account_activation_token.check_token(user, token):
-            user.is_active = True
-            user.save()
-            login(request, user)
+            user.base_user.is_active = True
+            user.base_user.save()
+            login(request, user.base_user)
             return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
         else:
             return HttpResponse('Activation link is invalid!')
