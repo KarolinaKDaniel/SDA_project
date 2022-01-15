@@ -41,27 +41,17 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
                     <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
-                    <li><a class="dropdown-item" href="{% url 'prescription-list' %}">Prescription</a></li>
+                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                    <li>
+                        <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
+                           Create Prescription
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
-                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
-                    Create Prescription
-                </a>
-                {% endif %}
-             </div>
         </div>
-        <!--    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">-->
-        <!--        <div class="navbar-nav">-->
-        <!--            <a class="nav-item nav-link active" href="{% url 'medicines-all' %}">-->
-        <!--                Medicines-->
-        <!--            </a>-->
-        <!--            <a class="nav-item nav-link active" href="{% url 'doctors-all' %}">-->
-        <!--                Doctors-->
-        <!--            </a>-->
-        <!--        </div>-->
-        <!--    </div>-->
-        <form class="d-flex"  method=POST action="{% url 'search-medicine' %}">
+        <form class="d-flex" method=POST action="{% url 'search-medicine' %}">
             {% csrf_token %}
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit" name="searched">Search</button>
@@ -77,6 +67,13 @@
                     {% else %}Hello, {{ user.username }}!{% endif %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
+
+                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                    <a class="dropdown-item text-right" href="#">Profile</a>
+                    <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                        Prescriptions</a>
+                    {% endif %}
+
                     <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
                 </div>
                 {% else %}
@@ -89,32 +86,6 @@
                 {% endif %}
             </div>
         </div>
-         <div class="navbar-nav ml-auto">
-        <div class="nav-item dropdown">
-            {% if user.is_authenticated %}
-            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                {% if user.first_name %}Hello, {{ user.first_name }}!
-                {% else %}Hello, {{ user.username }}!{% endif %}
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-
-                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="dropdown-item text-right" href="#">Profile</a>
-                <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All Prescriptions</a>
-                {% endif %}
-
-                <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
-            </div>
-            {% else %}
-            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                You are not logged in.
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
-            </div>
-            {% endif %}
-        </div>
-    </div>
     </div>
 </nav>
 <div class="container">

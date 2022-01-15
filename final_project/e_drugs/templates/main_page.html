@@ -43,25 +43,22 @@
         <h1>Doctors for You!</h1>
     </div>
     {% if doctors %}
-    {% for doc in doctors %}
-    {% if forloop.counter < 5 %}
-    <ul class="sec-ul list-group list-group-flush">
-        <li class="list-group-item">
-            <img src="{% if doc.photo %}{{ doc.photo.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}"
-                 class="align-self-center mr-3" width="89" height="144"
-                 alt="a photo of doctor">
-            <div class="header-text">
-                <p class="media-heading"><a href="{% url 'doctor-detail' doc.id %}">Dr {{ doc }}</a></p>
-                <p>Specialization: {{ doc.specialization }}</p>
-            </div>
-        </li>
-    </ul>
+        {% for doc in doctors %}
+            {% if forloop.counter < 5 %}
+                <ul class="sec-ul list-group list-group-flush">
+                    <li class="list-group-item">
+                        <img src="{% if doc.photo %}{{ doc.photo.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}"
+                             class="align-self-center mr-3" width="89" height="144"
+                             alt="a photo of doctor">
+                        <div class="header-text">
+                            <p class="media-heading"><a href="{% url 'doctor-detail' doc.id %}">Dr {{ doc }}</a></p>
+                            <p>Specialization: {{ doc.specialization }}</p>
+                        </div>
+                    </li>
+                </ul>
+            {% endif %}
+        {% endfor %}
     {% endif %}
-    {% endfor %}
 </section>
 </main>
-
-
-
-{% endif %}
 {% endblock %}
