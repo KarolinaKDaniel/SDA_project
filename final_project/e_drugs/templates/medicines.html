@@ -6,7 +6,10 @@ Medicines
 {% endblock %}
 
 {% block content %}
-<h1>Medicines</h1>
+
+<div class="borderh">
+    <h1>Medicines</h1>
+</div>
 
 <!--<form class="d-flex" method=POST action="{% url 'search-medicine' %}">-->
 <!--    {% csrf_token %}-->
@@ -28,7 +31,8 @@ Medicines
         <i>{{ dos.0 }} - {{ dos.1 }}</i>
         {% endfor %}
     </li>
-    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
+    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200"
+         height="200" alt="a picture of the drug">
     <p>
         <b> Price: </b>{{ med.price_net }} zł
     </p>

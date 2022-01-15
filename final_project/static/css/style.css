@@ -6,8 +6,6 @@ body {
     background-color: WhiteSmoke;
 }
 
-
-
 h1 {
     font-size: 36px;
     color: #00ff00;
@@ -39,11 +37,6 @@ nav .container {
     height: 70px;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-}
-
 .d-flex {
     margin-block-end: 0rem;
     }
@@ -51,14 +44,21 @@ nav a {
 .dropdown-menu {
    background-color: aquamarine;
    border-color: aquamarine;
-   border-radius: 20px;
+   border-radius: 10px;
    }
+
+
+show {
+   padding-left 8px;
+   padding-right 8px;
+}
 
 .btn {
   width: 70px;
   background: none;
   border: 3px solid;
   border-radius: 10px;
+
 }
 
 .form-control {
@@ -80,7 +80,6 @@ nav a {
 .navbar a {
   float: left;
   text-align: center;
-  padding: 12px;
   color: white;
   text-decoration: none;
   font-size: 17px;
@@ -89,8 +88,9 @@ nav a {
 .nav-links a:hover {
     /*transform: scale(1.2);*/
     border: 3px solid gold;
-    border-radius: 30px;
+    border-radius: 10px;
     background-color: gold;
+    padding: auto;
 }
 
 .offer-list {
@@ -131,4 +131,3 @@ section {
     margin:40px auto;
     font-weight:bold;
 }
-
