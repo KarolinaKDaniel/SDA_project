@@ -2,14 +2,43 @@ from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, View
+from .forms import PatientRegistrationForm
+from django.shortcuts import redirect
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth import login
+from django.contrib import messages
+from .tokens import account_activation_token
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 
-from .models import Patient, Doctor
+from .models import Patient, Doctor, User, MyUser
+
+class ActivateAccount(View):
+    def get(self, request, uidb64, token, *args, **kwargs):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = MyUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and account_activation_token.check_token(user, token):
+            user.base_user.is_active = True
+            user.base_user.save()
+            login(request, user.base_user)
+            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        else:
+            return HttpResponse('Activation link is invalid!')
+
+
+class RegisterPatientView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = PatientRegistrationForm
+    success_url = reverse_lazy('index')
 
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
-
 
 class PatientCreateView(CreateView):
     template_name = 'patient_form.html'

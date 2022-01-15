@@ -27,9 +27,7 @@ Medicines
 <ul class="list-group list-group-flush">
     {% for med in medicines %}
     <li class="list-group-item"><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
-        {% for dos in med.doses.items %}
-        <i>{{ dos.0 }} - {{ dos.1 }}</i>
-        {% endfor %}
+        <i>{{ med.substance.name }} - {{ med.dose }}</i>
     </li>
     <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200"
          height="200" alt="a picture of the drug">
