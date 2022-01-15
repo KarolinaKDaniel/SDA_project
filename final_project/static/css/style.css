@@ -58,6 +58,7 @@ show {
   background: none;
   border: 3px solid;
   border-radius: 10px;
+  padding: 0.375rem .75rem;
 
 }
 
@@ -107,9 +108,10 @@ show {
     margin: auto;
     transition: .5s all;
 }
-.offer-box a {
+.offer-box a, .media-heading a, .list-group-item a {
     color: brown;
     text-decoration: none;
+    font-size: 40px;
 }
 
 .offer-box:hover {
@@ -131,3 +133,4 @@ section {
     margin:40px auto;
     font-weight:bold;
 }
+
