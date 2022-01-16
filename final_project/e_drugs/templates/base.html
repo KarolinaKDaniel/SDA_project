@@ -23,7 +23,7 @@
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container fixed">
-        <div class="nav-links">
+        <div>
             <a class="navbar-brand" href="/">E-drugs</a>
             <button
                     class="navbar-toggler" type="button"
@@ -33,59 +33,55 @@
             </button>
         </div>
 
-            <div class="navbar-nav nav-links">
-                <div class="nav-item dropdown">
-                    <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                        Categories
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
-                        <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
-                        {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                        <li>
-                            <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
-                                Create Prescription
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
+        <div class="navbar-nav nav-links">
+            <div class="nav-item dropdown">
+                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                    Menu
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
+                    <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
+                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                    <li>
+                        <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
+                            Create Prescription
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-            <form class="d-flex" method=POST action="{% url 'search-medicine' %}">
-                {% csrf_token %}
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit" name="searched">Search</button>
-            </form>
+        </div>
+        <div>
             <form class="d-flex">
-                <button class="btn btn-outline-success" type="submit">Koszyk</button>
+                <button class="btn btn-outline-success" id="btn-cart" type="submit">Cart</button>
             </form>
         </div>
-        <div class="navbar-nav">
-            <div class="nav-item dropdown">
-                {% if user.is_authenticated %}
-                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                    {% if user.first_name %}Hello, {{ user.first_name }}!
-                    {% else %}Hello, {{ user.username }}!{% endif %}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
 
-                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                    <a class="dropdown-item text-right" href="#">Profile</a>
-                    <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
-                        Prescriptions</a>
-                    {% endif %}
 
-                    <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
-                </div>
-                {% else %}
-                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
-                    You are not logged in.
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
-                </div>
+        <div class="nav-item dropdown nav-links">
+            {% if user.is_authenticated %}
+            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                {% if user.first_name %}Hello, {{ user.first_name }}!
+                {% else %}Hello, {{ user.username }}!{% endif %}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+
+                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                <a class="dropdown-item text-right" href="#">Profile</a>
+                <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                    Prescriptions</a>
                 {% endif %}
+
+                <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
             </div>
+            {% else %}
+            <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                You are not logged in.
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </nav>

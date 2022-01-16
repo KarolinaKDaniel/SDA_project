@@ -9,17 +9,17 @@ Doctors
 <div class="borderh">
     <h1>Doctors</h1>
 </div>
-<!--<form class="d-flex" method=POST action="{% url 'search-doctor' %}">-->
-<!--    {% csrf_token %}-->
-<!--    <div class="col-xs-2">-->
-<!--        <input class="form-control me-2" type="search" placeholder="Surname | Specialization" aria-label="Search"-->
-<!--               name="searched">-->
-<!--    </div>-->
-<!--    <button class="btn btn-outline-success" type="submit">-->
-<!--        Search-->
-<!--    </button>-->
-<!--</form>-->
-<!--<hr>-->
+<form class="d-flex" method=POST action="{% url 'search-doctor' %}">
+    {% csrf_token %}
+    <div class="col-xs-2">
+        <input class="form-control me-2" type="search" placeholder="Surname | Specialization" aria-label="Search"
+               name="searched">
+    </div>
+    <button class="btn btn-outline-success" type="submit">
+        Search
+    </button>
+</form>
+<hr>
 
 {% if doctors %}
 <ul class="list-group list-group-flush">
@@ -42,10 +42,7 @@ Doctors
     {% empty %}
     <hr>
     <h3>Sorry, I can't find a doctor!</h3>
-
     {% endfor %}
-    </div>
-
 </ul>
 {% include "pagination.html" with page=page_obj %}
 {% endif %}

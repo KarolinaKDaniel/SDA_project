@@ -40,7 +40,6 @@ def medicines(request):
     return render(request, template_name='medicines.html', context={'medicines': meds,
                                                                     'page': page})
 
-
 def search_medicine(request):
     if request.method == "POST":
         searched = request.POST['searched']
@@ -51,7 +50,6 @@ def search_medicine(request):
         return render(request, template_name='medicines.html',
                       context={"searched": searched,
                                "medicines": medicines})
-
 
 class MedicineCreateView(CreateView):
     form_class = MedicineForm
