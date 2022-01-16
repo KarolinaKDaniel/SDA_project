@@ -1,5 +1,5 @@
 html {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
 }
 
 body {
@@ -63,11 +63,15 @@ nav .container {
     width: 1200px;
 }
 
-footer {
+.footer {
     background-color: #008080;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
  }
 
-footer .container {
+.footer .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -111,14 +115,28 @@ nav img:hover {
     transform: rotate(360deg) scale(1.2);
 }
 
-
-/*OVERWRITTEN BOOTSTRAP*/
-
 .nav-links {
     display: flex;
     justify-content: space-between;
     width: 5%;
 }
+
+.nav-links a:hover {
+    /*transform: scale(1.2);*/
+    border: 2px solid aqua;
+    border-radius: 10px;
+    background-color: #00CC99;
+    padding: auto;
+}
+
+
+
+
+/*OVERWRITTEN BOOTSTRAP*/
+
+
+
+
 
 .navbar a {
   text-align: center;
@@ -129,14 +147,6 @@ nav img:hover {
 
 .navbar a:hover {
     color:white;
-}
-
-.nav-links a:hover {
-    /*transform: scale(1.2);*/
-    border: 2px solid aqua;
-    border-radius: 10px;
-    background-color: #00CC99;
-    padding: auto;
 }
 
 .d-flex {
@@ -202,3 +212,7 @@ show {
     background: paleturquoise;
     border-radius: 20px;
     }
+
+#row-doc {
+    flex-direction: row;
+}

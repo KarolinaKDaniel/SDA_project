@@ -34,7 +34,7 @@ Medicines
     <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200"
          height="200" alt="a picture of the drug">
     <p>
-        <b> Price: </b>{{ med.price_net }} zł
+        <b> Price: </b>{{ med.price_net|floatformat:.2 }} zł
     </p>
     {% empty %}
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>
