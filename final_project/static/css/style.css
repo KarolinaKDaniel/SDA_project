@@ -8,7 +8,6 @@ body {
 
 p {
    font-size: 24px;
-
  }
 
 
@@ -16,6 +15,10 @@ p {
 h1, p {
     color: #00CC99;
 
+}
+
+h3 {
+    color: #008080;
 }
 
 nav {
@@ -32,6 +35,12 @@ section {
     margin:40px auto;
     font-weight: bold;
 }
+
+.pagination a {
+    color: #008080;
+    text-decoration: none;
+    font-size: 25px;
+    }
 
 
 .header-h {
@@ -54,9 +63,21 @@ nav .container {
     width: 1200px;
 }
 
-.italic-p  {
+footer {
+    background-color: #008080;
+ }
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    }
+
+#italic-p  {
   display: flex;
   font-style: italic;
+  font-size: 15px;
 }
 
 #btn-cart {
@@ -70,16 +91,28 @@ nav .container {
     line-height: 2;
     padding-left: 25px;
     padding-right: 25px;
-    transition: duration: 5s;
+    transition: duration 5s;
 }
 
 #btn-cart:hover {
    transform: translateY(30px) scale(1.2);
    background-color: aqua;
-   border-color: gold;
 }
 
-Overwritten Bootstrap*/
+nav img {
+  border-radius: 5px;
+  margin-right: 5px;
+  transition-property: border;
+  transition: duration 2s;
+}
+
+nav img:hover {
+    border: 3px solid red;
+    transform: rotate(360deg) scale(1.2);
+}
+
+
+/*OVERWRITTEN BOOTSTRAP*/
 
 .nav-links {
     display: flex;
@@ -92,7 +125,10 @@ Overwritten Bootstrap*/
   color: white;
   text-decoration: none;
   font-size: 25px;
-  f
+}
+
+.navbar a:hover {
+    color:white;
 }
 
 .nav-links a:hover {
@@ -120,9 +156,16 @@ show {
 }
 
 .btn {
+  font-weight: 600;
   background: none;
   border: 3px solid;
   border-radius: 10px;
+}
+
+.btn-info {
+   margin: 15px 5px;;
+   color: #008080;
+   border: 3px solid #008080;
 }
 
 
@@ -147,7 +190,7 @@ show {
     transition: .5s all;
 }
 .offer-box a, .media-heading a, .list-group-item a {
-    color: brown;
+    color: #00CC99;;
     text-decoration: none;
     font-weight: 600;
     font-size: 35px;

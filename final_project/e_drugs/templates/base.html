@@ -24,6 +24,7 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container fixed">
         <div>
+            <img src="../static/green_cross_logo.png" alt="green_cross_logo" height="70" width="70">
             <a class="navbar-brand" href="/">E-drugs</a>
             <button
                     class="navbar-toggler" type="button"
@@ -67,19 +68,19 @@
             <div class="dropdown-menu dropdown-menu-right">
 
                 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="dropdown-item text-right" href="#">Profile</a>
-                <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
                     Prescriptions</a>
                 {% endif %}
 
-                <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
             {% else %}
             <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
                 You are not logged in.
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
+                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
             </div>
             {% endif %}
         </div>
@@ -90,6 +91,11 @@
         {% block content %}{% endblock %}
     </div>
 </div>
+<footer>
+     <div class="container">
+         <p>Contact Details</p>
+     </div>
+</footer>
 </body>
 
 </html>

@@ -20,7 +20,7 @@
                 <!--            <h6>{{ dos.0 }} - {{ dos.1 }}</h6>-->
 
                 <!--            {% endfor %}-->
-                <span class="indent-p">
+                <span id="italic-p">
                      <p>{{ med.substance }}</p>
                      <p>{{ med.dose }}</p>
                 </span>
@@ -28,9 +28,9 @@
                      height="100"
                      src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}"
                      alt="a picture of the drug">
-                <p>
+                <h3>
                     Price: {{ med.price_net }} zł
-                </p>
+                </h3>
             </div>
             {% endif %}
             {% empty %}
