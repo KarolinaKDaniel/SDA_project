@@ -12,6 +12,7 @@ from django.contrib import messages
 from .tokens import account_activation_token
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .models import Patient, Doctor, User, MyUser
 
@@ -77,9 +78,10 @@ def search_doctor(request):
                                "doctors": doctors})
 
 
-class PatientDetailView(DetailView):
+class PatientDetailView(PermissionRequiredMixin, DetailView):
     model = Patient
     template_name = 'patient_detail.html'
     context_object_name = 'patient'
+    permission_required = 'accounts.view_patient'
 
 # Create your views here.
