@@ -1,6 +1,7 @@
 import datetime
 from logging import getLogger
 
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -16,7 +17,8 @@ LOGGER = getLogger(__name__)
 
 
 def main_page(request):
-    return render(request, template_name='main_page.html')
+    return render(request, template_name='main_page.html', context={'medicines': Medicine.objects.all(),
+                                                                    'doctors': Doctor.objects.all()})
 
 
 def medicines(request):
@@ -27,8 +29,16 @@ def medicines(request):
         drugs_list = Medicine.objects.all().order_by("price_net")
     else:
         drugs_list = Medicine.objects.all()
-    return render(request, template_name='medicines.html', context={'medicines': drugs_list})
-
+    paginator = Paginator(drugs_list, 3)
+    page = request.GET.get('page')
+    try:
+        meds = paginator.page(page)
+    except PageNotAnInteger:
+        meds = paginator.page(1)
+    except EmptyPage:
+        meds = paginator.page(paginator.num_pages)
+    return render(request, template_name='medicines.html', context={'medicines': meds,
+                                                                    'page': page})
 
 def search_medicine(request):
     if request.method == "POST":
@@ -40,7 +50,6 @@ def search_medicine(request):
         return render(request, template_name='medicines.html',
                       context={"searched": searched,
                                "medicines": medicines})
-
 
 class MedicineCreateView(CreateView):
     form_class = MedicineForm

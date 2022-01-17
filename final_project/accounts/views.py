@@ -15,7 +15,6 @@ from django.http import HttpResponse
 
 from .models import Patient, Doctor, User, MyUser
 
-
 class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
         try:
@@ -41,10 +40,14 @@ class RegisterPatientView(CreateView):
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
-
-class PatientDeleteView(DeleteView):
+class PatientCreateView(CreateView):
+    template_name = 'patient_form.html'
     model = Patient
+    success_url = reverse_lazy('patients')
+
+class PatientDeleteView(CreateView):
     template_name = 'patient_delete.html'
+    model = Patient
     success_url = reverse_lazy('patients')
 
 
@@ -62,6 +65,7 @@ class DoctorDetailView(DetailView):
 
 class DoctorListView(ListView):
     template_name = 'doctors.html'
+    paginate_by = 3
     model = Doctor
     context_object_name = 'doctors'
 
@@ -70,7 +74,7 @@ def search_doctor(request):
     if request.method == "POST":
         searched = request.POST['searched']
         doctors = Doctor.objects.filter(
-            Q(specialization__icontains=searched) | Q(my_user__last_name__icontains=searched)
+            Q(specialization__icontains=searched) | Q(my_user__base_user__last_name__icontains=searched)
         )
         return render(request, template_name='doctors.html',
                       context={"searched": searched,

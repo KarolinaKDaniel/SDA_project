@@ -9,14 +9,14 @@ Prescription
 
 {% if profession %}
 <h1>All prescriptions</h1>
-<h4>Prescribed by {{ profession.my_user }}</h4>
+<h4>Prescribed by {{ profession.my_user.base_user.first_name }} {{ profession.my_user.base_user.last_name }}</h4>
 <hr>
 <ul>
     {% for prescription in prescriptions %}
     <li>Written:
         <a href="{% url 'prescription-detail' pk=prescription.id %}">
-            {{ prescription.created|date:"M d, Y" }} for: {{ prescription.patient.my_user.first_name }}
-            {{ prescription.patient.my_user.last_name }}
+            {{ prescription.created|date:"M d, Y" }} for: {{ prescription.patient.my_user.base_user.first_name }}
+            {{ prescription.patient.my_user.base_user.last_name }}
         </a>
     </li>
     {% endfor %}
