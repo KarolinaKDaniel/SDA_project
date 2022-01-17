@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from .models import Patient, MyUser, Doctor
+from .models import Patient, MyUser, Doctor, Pharmacist
 from e_drugs.models import Affliction
 from django.contrib.auth.models import User, Group
 from django.db.transaction import atomic
