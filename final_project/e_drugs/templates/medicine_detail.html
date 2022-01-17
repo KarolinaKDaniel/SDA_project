@@ -11,8 +11,8 @@
 
 <h2>Price: {{ medicine.price_net }} zł</h2>
 <hr>
-<h4>Form: {{ medicine.form }}</h4>
-<h4>Manufacturer: {{ medicine.manufacturer }}</h4>
+<p>Form: {{ medicine.form }}</p>
+<p>Manufacturer: {{ medicine.manufacturer }}</p>
 <h2>{% if medicine.need_prescription %}
     Needs prescription!
     {% else %}

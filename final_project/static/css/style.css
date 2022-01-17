@@ -10,45 +10,34 @@ p {
    font-size: 24px;
  }
 
-
-
 h1, p {
     color: #00CC99;
-
 }
 
-h3 {
+h2 {
+ font-weight: 600;
+ color: green;
+}
+
+h3, li{
     color: #008080;
 }
+
+li, .colo {
+    font-size: 25px;
+    color: #008080;
+    }
+
+li a:hover {
+    color: aqua;
+    text-decoration: none;
+    }
 
 nav {
     background-color: #008080;
     position: fixed;
     width: 100%;
 }
-
-section {
-     margin-bottom: 80px;
-     }
-
-.pagination {
-    margin:40px auto;
-    font-weight: bold;
-}
-
-.pagination a {
-    color: #008080;
-    text-decoration: none;
-    font-size: 25px;
-    }
-
-
-.header-h {
-    text-align: center;
-    margin-bottom: 50px;
-    text-shadow: 1px 1px 5px black;
-    }
-
 
 .container {
     width: 1200px;
@@ -62,6 +51,42 @@ nav .container {
     height: 70px;
     width: 1200px;
 }
+
+nav img {
+  border-radius: 5px;
+  margin-right: 5px;
+  transition-property: border;
+  transition: duration 2s;
+}
+
+nav img:hover {
+    border: 3px solid red;
+    transform: rotate(360deg) scale(1.2);
+}
+
+section {
+     margin-bottom: 80px;
+     }
+
+.pagination {
+    color: #008080;
+    font-size: 25px;
+    margin:40px auto;
+    font-weight: bold;
+}
+
+.pagination a, li a {
+    color: aqua;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 600;
+    }
+
+.header-h {
+    text-align: center;
+    margin-bottom: 50px;
+    text-shadow: 1px 1px 5px black;
+    }
 
 .footer {
     background-color: #008080;
@@ -103,22 +128,9 @@ nav .container {
    background-color: aqua;
 }
 
-nav img {
-  border-radius: 5px;
-  margin-right: 5px;
-  transition-property: border;
-  transition: duration 2s;
-}
-
-nav img:hover {
-    border: 3px solid red;
-    transform: rotate(360deg) scale(1.2);
-}
-
 .nav-links {
     display: flex;
     justify-content: space-between;
-    width: 5%;
 }
 
 .nav-links a:hover {
@@ -130,12 +142,7 @@ nav img:hover {
 }
 
 
-
-
 /*OVERWRITTEN BOOTSTRAP*/
-
-
-
 
 
 .navbar a {
@@ -159,7 +166,6 @@ nav img:hover {
    border-radius: 10px;
    }
 
-
 show {
    padding-left 8px;
    padding-right 8px;
@@ -178,12 +184,23 @@ show {
    border: 3px solid #008080;
 }
 
+.btn-primary {
+    margin: 15px 5px;
+    color: #007bff;
+    border: 3px solid #007bff;
+    }
+
+.btn-danger {
+    margin: 15px 5px;
+    color: #dc3545;
+    border: 3px solid #dc3545;
+    }
+
 
 .form-control {
    height: 50px;
    width:400px;
 }
-
 
 .offer-list {
     display: flex;
@@ -212,6 +229,10 @@ show {
     background: paleturquoise;
     border-radius: 20px;
     }
+
+.list-group-item {
+   background-color: none;
+}
 
 #row-doc {
     flex-direction: row;
