@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, View, UpdateView
-from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm
+from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm, PatientUpdateForm
 from django.shortcuts import redirect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -19,20 +19,22 @@ from .models import Patient, Doctor, User, MyUser
 class PatientUpdateView(UpdateView):
     template_name = 'patient_form.html'
     model = User
-    form_class = PatientRegistrationForm
+    form_class = PatientUpdateForm
     success_url = reverse_lazy('index')
 
     def get_initial(self):
         initial_data = super().get_initial()
         print(initial_data)
-        patient = Patient.objects.get(my_user=self.get_object())
-        initial_data['address'] = patient.address
-        initial_data['phone'] = patient.phone
-        initial_data['personal_ID'] = patient.Personal_ID
-        initial_data['email'] = patient.email
-        initial_data['first_name'] = patient.first_name
-        initial_data['last_name'] = patient.last_name
+        my_user = MyUser.objects.get(base_user = self.get_object())
+        patient = Patient.objects.get(my_user=my_user)
+        initial_data['address'] = patient.my_user.address
+        initial_data['phone'] = patient.my_user.phone
+        initial_data['personal_ID'] = patient.my_user.Personal_ID
+        # initial_data['email'] = patient.email
+        # initial_data['first_name'] = patient.first_name
+        # initial_data['last_name'] = patient.last_name
         initial_data['affliction'] = patient.affliction
+        initial_data['doctor'] = patient.doctor
         return initial_data
 
 

@@ -1,5 +1,5 @@
 from django.forms import ModelForm, CharField, TextInput, Textarea, ModelMultipleChoiceField, MultipleHiddenInput, ImageField
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.template.loader import get_template
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,6 +9,23 @@ from e_drugs.models import Affliction
 from django.contrib.auth.models import User
 from django.db.transaction import atomic
 from .tokens import account_activation_token
+
+
+class PatientUpdateForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+    address = CharField(max_length=256, widget=Textarea, min_length=20)
+    phone = CharField(max_length=20, widget=TextInput)
+    Personal_ID = CharField(max_length=20)
+    affliction = ModelMultipleChoiceField(queryset=Affliction.objects.all(),
+                                          blank=True, required=False)
+    doctor = ModelMultipleChoiceField(queryset=Doctor.objects.all(), widget=MultipleHiddenInput, required=False, blank=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class PatientRegistrationForm(UserCreationForm):
