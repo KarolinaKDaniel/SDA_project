@@ -18,14 +18,22 @@ from .models import Patient, Doctor, User, MyUser
 
 class PatientUpdateView(UpdateView):
     template_name = 'patient_form.html'
-    model = Patient
+    model = User
     form_class = PatientRegistrationForm
     success_url = reverse_lazy('index')
 
-    def get_form_kwargs(self):
-        kwargs = super(PatientUpdateView, self).get_form_kwargs()
-        kwargs['my_user'] = self.request.my_user.pk
-        return kwargs
+    def get_initial(self):
+        initial_data = super().get_initial()
+        print(initial_data)
+        patient = Patient.objects.get(my_user=self.get_object())
+        initial_data['address'] = patient.address
+        initial_data['phone'] = patient.phone
+        initial_data['personal_ID'] = patient.Personal_ID
+        initial_data['email'] = patient.email
+        initial_data['first_name'] = patient.first_name
+        initial_data['last_name'] = patient.last_name
+        initial_data['affliction'] = patient.affliction
+        return initial_data
 
 
 class ActivateAccount(View):
