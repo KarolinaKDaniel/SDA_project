@@ -3,6 +3,7 @@ from logging import getLogger
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render
@@ -44,7 +45,7 @@ def search_medicine(request):
     if request.method == "POST":
         searched = request.POST['searched']
         medicines = Medicine.objects.filter(
-            substance__name__contains=searched,
+            Q(substance__name__contains=searched) | Q(name__contains=searched),
             substance__is_active=True
         )
         return render(request, template_name='medicines.html',
