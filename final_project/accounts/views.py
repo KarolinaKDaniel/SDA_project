@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, View, UpdateView
-from .forms import PatientRegistrationForm
+from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm
 from django.shortcuts import redirect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -50,13 +50,31 @@ class RegisterPatientView(CreateView):
     success_url = reverse_lazy('index')
 
 
+class DoctorCreateView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = DoctorCreationForm
+    success_url = reverse_lazy('index')
+
+
+class PharmacistCreateView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = PharmacistCreationForm
+    success_url = reverse_lazy('index')
+
+
 class CustomLoginView(LoginView):
     template_name = 'login.html'
 
 
-class PatientDeleteView(DeleteView):
+class PatientCreateView(CreateView):
+    template_name = 'patient_form.html'
     model = Patient
+    success_url = reverse_lazy('patients')
+
+
+class PatientDeleteView(CreateView):
     template_name = 'patient_delete.html'
+    model = Patient
     success_url = reverse_lazy('patients')
 
 
@@ -74,6 +92,7 @@ class DoctorDetailView(DetailView):
 
 class DoctorListView(ListView):
     template_name = 'doctors.html'
+    paginate_by = 3
     model = Doctor
     context_object_name = 'doctors'
 
@@ -82,7 +101,7 @@ def search_doctor(request):
     if request.method == "POST":
         searched = request.POST['searched']
         doctors = Doctor.objects.filter(
-            Q(specialization__icontains=searched) | Q(my_user__last_name__icontains=searched)
+            Q(specialization__icontains=searched) | Q(my_user__base_user__last_name__icontains=searched)
         )
         return render(request, template_name='doctors.html',
                       context={"searched": searched,

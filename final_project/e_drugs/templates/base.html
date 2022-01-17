@@ -6,68 +6,94 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  </head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+</head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
     <div class="container fixed">
-        <a class="navbar-brand" href="/">E-drugs</a>
-        <button
-                class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="{% url 'medicines-all' %}">
-                    Medicines
-                </a>
-                <a class="nav-item nav-link active" href="{% url 'doctors-all' %}">
-                    Doctors
-                </a>
-                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
-                    Create Prescription
-                </a>
-                {% endif %}
-             </div>
+        <div>
+            <img src="../static/green_cross_logo.png" alt="green_cross_logo" height="70" width="70">
+            <a class="navbar-brand" href="/">E-drugs</a>
+            <button
+                    class="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-         <div class="navbar-nav ml-auto">
-        <div class="nav-item dropdown">
+
+        <div class="navbar-nav nav-links">
+            <div class="nav-item dropdown">
+                <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+                    Menu
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
+                    <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
+                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
+                    <li>
+                        <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
+                            Create Prescription
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div>
+            <form class="d-flex">
+                <button class="btn btn-outline-success" id="btn-cart" type="submit">Cart</button>
+            </form>
+        </div>
+
+
+        <div class="nav-item dropdown nav-links">
             {% if user.is_authenticated %}
             <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
                 {% if user.first_name %}Hello, {{ user.first_name }}!
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu">
 
                 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="dropdown-item text-right" href="#">Profile</a>
-                <a class="dropdown-item text-right" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All Prescriptions</a>
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                    Prescriptions</a>
                 {% endif %}
 
-                <a class="dropdown-item text-right" href="{% url 'logout' %}">Logout</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
             {% else %}
             <a class="nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
                 You are not logged in.
             </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item text-right" href="{% url 'login' %}">Login</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
             </div>
             {% endif %}
         </div>
-    </div>
     </div>
 </nav>
 <div class="container">
     <div class="jumbotron">
         {% block content %}{% endblock %}
+    </div>
+</div>
+<div class="footer">
+    <div class="container">
+        <p>Contact Details</p>
     </div>
 </div>
 </body>

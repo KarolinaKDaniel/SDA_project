@@ -6,8 +6,9 @@ Doctors
 {% endblock %}
 
 {% block content %}
-
-<h1>Doctors</h1>
+<div class="header-h">
+    <h1>Doctors</h1>
+</div>
 <form class="d-flex" method=POST action="{% url 'search-doctor' %}">
     {% csrf_token %}
     <div class="col-xs-2">
@@ -20,7 +21,7 @@ Doctors
 </form>
 <hr>
 
-{% if searched or doctors %}
+{% if doctors %}
 <ul class="list-group list-group-flush">
     {% for doc in doctors %}
     <li class="list-group-item">
@@ -31,7 +32,9 @@ Doctors
                      alt="a photo of doctor">
             </div>
             <div class="media-body">
-                <h4 class="media-heading"><a href="{% url 'doctor-detail' doc.id %}">Dr {{ doc.my_user.first_name }} {{ doc.my_user.last_name }}</a></h4>
+                <h2 class="media-heading">
+                    <a href="{% url 'doctor-detail' doc.id %}">Dr {{ doc }}</a>
+                </h2>
                 <p>Specialization: {{ doc.specialization }}</p>
             </div>
         </div>
@@ -39,11 +42,9 @@ Doctors
     {% empty %}
     <hr>
     <h3>Sorry, I can't find a doctor!</h3>
-
     {% endfor %}
-
-    </div>
 </ul>
+{% include "pagination.html" with page=page_obj %}
 {% endif %}
 
 {% endblock %}
