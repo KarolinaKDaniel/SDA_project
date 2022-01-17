@@ -2,7 +2,7 @@ from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, View
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, View, UpdateView
 from .forms import PatientRegistrationForm
 from django.shortcuts import redirect
 from django.utils.encoding import force_str
@@ -14,6 +14,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 
 from .models import Patient, Doctor, User, MyUser
+
+
+class PatientUpdateView(UpdateView):
+    template_name = 'patient_form.html'
+    model = Patient
+    form_class = PatientRegistrationForm
+    success_url = reverse_lazy('index')
+
+    def get_form_kwargs(self):
+        kwargs = super(PatientUpdateView, self).get_form_kwargs()
+        kwargs['my_user'] = self.request.my_user.pk
+        return kwargs
 
 
 class ActivateAccount(View):
