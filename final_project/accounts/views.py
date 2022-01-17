@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, View
-from .forms import PatientRegistrationForm
+from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm
 from django.shortcuts import redirect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -14,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 
 from .models import Patient, Doctor, User, MyUser
+
 
 class ActivateAccount(View):
     def get(self, request, uidb64, token, *args, **kwargs):
@@ -37,13 +38,27 @@ class RegisterPatientView(CreateView):
     success_url = reverse_lazy('index')
 
 
+class DoctorCreateView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = DoctorCreationForm
+    success_url = reverse_lazy('index')
+
+
+class PharmacistCreateView(CreateView):
+    template_name = 'patient_form.html'
+    form_class = PharmacistCreationForm
+    success_url = reverse_lazy('index')
+
+
 class CustomLoginView(LoginView):
     template_name = 'login.html'
+
 
 class PatientCreateView(CreateView):
     template_name = 'patient_form.html'
     model = Patient
     success_url = reverse_lazy('patients')
+
 
 class PatientDeleteView(CreateView):
     template_name = 'patient_delete.html'
