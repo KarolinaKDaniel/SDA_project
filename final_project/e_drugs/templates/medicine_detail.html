@@ -20,11 +20,14 @@
         Don't need prescription!
         {% endif %}
     </h2>
-
-    <form action="{% url 'cart:cart_add' medicine.id %}" method="post">
-        {{ cart_product_form }}
-        {% csrf_token %}
-        <input type="submit" value="Add to cart">
-    </form>
+    {% if medicine_instance_count %}
+        <form action="{% url 'cart:cart_add' medicine.id %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="Add to cart">
+        </form>
+    {% else %}
+        <p>Product is not available</p>
+    {% endif %}
 </center>
 {% endblock %}

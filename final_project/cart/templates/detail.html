@@ -52,6 +52,10 @@
 
 <p class="text-right">
     <a href="{% url 'medicines-all' %}" class="button light">Continue shopping</a>
-    <a href="#" class="button">Checkout</a>
+    {% if user.is_authenticated %}
+        <a href="#" class="button">Checkout</a>
+    {% else %}
+        <a href="#" class="button">Login</a>
+    {% endif %}
 </p>
 {% endblock %}

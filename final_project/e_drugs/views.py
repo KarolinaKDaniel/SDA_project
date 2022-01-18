@@ -58,7 +58,13 @@ class MedicineDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MedicineDetailView, self).get_context_data(**kwargs)
         cart_product_form = CartAddProductForm()
+
+        medicine_instance_count = MedicineInstance.objects.filter(medicine=self.kwargs.get('pk')).count()
+        cart_product_form.fields['quantity'].choices = [(i, str(i)) for i in range(1, medicine_instance_count+1)]
+
         context['cart_product_form'] = cart_product_form
+        context['medicine_instance_count'] = medicine_instance_count
+
         return context
 
 
