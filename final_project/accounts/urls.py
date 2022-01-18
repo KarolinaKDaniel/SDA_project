@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 from .views import PatientListView, PatientDetailView, search_doctor, DoctorListView, DoctorDetailView, \
-    PatientDeleteView, CustomLoginView, RegisterPatientView, ActivateAccount
+    PatientDeleteView, CustomLoginView, RegisterPatientView, ActivateAccount, DoctorCreateView, PharmacistCreateView
 
 urlpatterns = [
     path('login', CustomLoginView.as_view(), name='login'),
@@ -14,4 +14,9 @@ urlpatterns = [
     path('doctors', DoctorListView.as_view(), name='doctors-all'),
     path('doctors/<int:pk>', DoctorDetailView.as_view(), name='doctor-detail'),
     path('search/doctor', search_doctor, name='search-doctor'),
+
+    path('doctor-new', DoctorCreateView.as_view(), name='doctor-create'),
+    # just for the sake of creating accounts for testing
+    path('pharmacist-new', PharmacistCreateView.as_view(), name='pharmacist-create'),
+    # just for the sake of creating accounts for testing
 ]

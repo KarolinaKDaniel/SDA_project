@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Prescription
@@ -7,14 +8,14 @@ Prescription
 
 {% block content %}
 <h1>All prescriptions</h1>
-<h4>Sorting</h4>
+<h3>Sorting</h3>
 
 {% for prescription in prescriptions %}
     {% if forloop.first %}
-        <a class="btn btn-secondary" href="{% url 'prescription-list' valid=True pk=prescription.patient.id %}">
+        <a class="btn btn-info" href="{% url 'prescription-list' valid=True pk=prescription.patient.id %}">
             Used
         </a>
-        <a class="btn btn-secondary" href="{% url 'prescription-list' valid=False pk=prescription.patient.id %}">
+        <a class="btn btn-info" href="{% url 'prescription-list' valid=False pk=prescription.patient.id %}">
             Not used
         </a>
     {% endif %}

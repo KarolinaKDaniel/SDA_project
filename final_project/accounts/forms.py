@@ -1,12 +1,12 @@
-from django.forms import ModelForm, CharField, TextInput, Textarea, ModelMultipleChoiceField, MultipleHiddenInput
+from django.forms import ModelForm, CharField, TextInput, Textarea, ModelMultipleChoiceField, MultipleHiddenInput, ImageField
 from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import get_template
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from .models import Patient, MyUser, Doctor
+from .models import Patient, MyUser, Doctor, Pharmacist
 from e_drugs.models import Affliction
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.transaction import atomic
 from .tokens import account_activation_token
 
@@ -31,6 +31,8 @@ class PatientRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         self.instance.is_active = False
         user = super().save(commit)
+        group = Group.objects.all().filter(name='patient')
+        user.groups.set(group)
         address = self.cleaned_data['address']
         phone = self.cleaned_data['phone']
         Personal_ID = self.cleaned_data['Personal_ID']
@@ -55,4 +57,74 @@ class PatientRegistrationForm(UserCreationForm):
         msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+        return user
+
+
+class PharmacistCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+    address = CharField(max_length=256, widget=Textarea, min_length=20)
+    phone = CharField(max_length=20, widget=TextInput)
+    Personal_ID = CharField(max_length=20)
+    credential_id = CharField(max_length=128)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    @atomic
+    def save(self, commit=True):
+        self.instance.is_active = True
+        user = super().save(commit)
+        group = Group.objects.all().filter(name='pharmacist')
+        user.groups.set(group)
+        address = self.cleaned_data['address']
+        phone = self.cleaned_data['phone']
+        Personal_ID = self.cleaned_data['Personal_ID']
+        credential_id = self.cleaned_data['credential_id']
+
+        my_user = MyUser(base_user=user, address=address, phone=phone, Personal_ID=Personal_ID)
+        if commit:
+            my_user.save()
+        pharmacist = Pharmacist(my_user=my_user, credential_id=credential_id)
+        if commit:
+            pharmacist.save()
+
+        return user
+
+class DoctorCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = ['username', 'first_name', 'last_name', 'email']
+
+    address = CharField(max_length=256, widget=Textarea, min_length=20)
+    phone = CharField(max_length=20, widget=TextInput)
+    Personal_ID = CharField(max_length=20)
+    credential_id = CharField(max_length=128)
+    photo = ImageField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    @atomic
+    def save(self, commit=True):
+        self.instance.is_active = True
+        user = super().save(commit)
+        group = Group.objects.all().filter(name='doctor')
+        user.groups.set(group)
+        address = self.cleaned_data['address']
+        phone = self.cleaned_data['phone']
+        Personal_ID = self.cleaned_data['Personal_ID']
+        credential_id = self.cleaned_data['credential_id']
+        photo = self.cleaned_data['photo']
+        my_user = MyUser(base_user=user, address=address, phone=phone, Personal_ID=Personal_ID)
+        if commit:
+            my_user.save()
+        doctor = Doctor(my_user=my_user, credential_id=credential_id, photo=photo)
+        if commit:
+            doctor.save()
+
         return user
