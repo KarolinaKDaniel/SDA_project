@@ -18,5 +18,6 @@
     {% else %}
     Don't need prescription!
     {% endif %}</h2>
-
+<a class="btn btn-primary" href="{% url 'med-update' pk=medicine.id %}">Update medicine</a>
+<a class="btn btn-danger" href="{% url 'med-delete' pk=medicine.id %}">Delete medicine</a>
 {% endblock %}

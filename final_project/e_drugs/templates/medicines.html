@@ -41,5 +41,6 @@ Medicines
     {% endfor %}
 </ul>
 {% include "pagination.html" with page=medicines %}
+<a class="btn btn-primary" href="{% url 'med-create' %}">New medicine</a>
 {% endif %}
 {% endblock %}
