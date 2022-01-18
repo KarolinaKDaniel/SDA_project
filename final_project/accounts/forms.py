@@ -35,16 +35,19 @@ class PatientUpdateForm(UserChangeForm):
         Personal_ID = self.cleaned_data['Personal_ID']
         affliction = self.cleaned_data['affliction']
         doctor = self.cleaned_data['doctor']
-        my_user = MyUser(base_user=user, address=address, phone=phone, Personal_ID=Personal_ID)
+        my_user = MyUser.objects.get(base_user__pk=user.pk)
+        my_user.address = address
+        my_user.phone = phone
+        my_user.Personal_ID = Personal_ID
         if commit:
             my_user.save()
-        patient = Patient(my_user=my_user)
+        patient = Patient.objects.get(my_user__pk=my_user.pk)
+        for doc in doctor:
+            patient.doctor.add(doc)
+        for afflic in affliction:
+            patient.affliction.add(afflic)
         if commit:
             patient.save()
-            for doc in doctor:
-                patient.doctor.add(doc)
-            for afflic in affliction:
-                patient.affliction.add(afflic)
         return user
 
 
