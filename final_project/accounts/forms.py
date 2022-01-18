@@ -22,11 +22,30 @@ class PatientUpdateForm(UserChangeForm):
                                           blank=True, required=False)
     doctor = ModelMultipleChoiceField(queryset=Doctor.objects.all(), widget=MultipleHiddenInput, required=False, blank=True)
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+    @atomic
+    def save(self, commit=True):
+        user = super().save(commit)
+        address = self.cleaned_data['address']
+        phone = self.cleaned_data['phone']
+        Personal_ID = self.cleaned_data['Personal_ID']
+        affliction = self.cleaned_data['affliction']
+        doctor = self.cleaned_data['doctor']
+        my_user = MyUser(base_user=user, address=address, phone=phone, Personal_ID=Personal_ID)
+        if commit:
+            my_user.save()
+        patient = Patient(my_user=my_user)
+        if commit:
+            patient.save()
+            for doc in doctor:
+                patient.doctor.add(doc)
+            for afflic in affliction:
+                patient.affliction.add(afflic)
+        return user
 
 
 class PatientRegistrationForm(UserCreationForm):
