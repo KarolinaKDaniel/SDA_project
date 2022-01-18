@@ -18,23 +18,24 @@ from .models import Patient, Doctor, User, MyUser
 
 class PatientUpdateView(UpdateView):
     template_name = 'patient_form.html'
-    model = User
+    model = Patient
     form_class = PatientUpdateForm
     success_url = reverse_lazy('index')
 
+    def get_object(self, queryset=None):
+        my_user_pk = Patient.objects.get(pk=self.kwargs.get('pk')).my_user.pk
+        base_user_pk = MyUser.objects.get(pk = my_user_pk).base_user.pk
+        user = User.objects.get(pk = base_user_pk)
+        return user
+
     def get_initial(self):
         initial_data = super().get_initial()
-        print(initial_data)
-        my_user = MyUser.objects.get(base_user = self.get_object())
-        patient = Patient.objects.get(my_user=my_user)
+        patient = Patient.objects.get(pk=self.kwargs.get('pk'))
         initial_data['address'] = patient.my_user.address
         initial_data['phone'] = patient.my_user.phone
         initial_data['personal_ID'] = patient.my_user.Personal_ID
-        # initial_data['email'] = patient.email
-        # initial_data['first_name'] = patient.first_name
-        # initial_data['last_name'] = patient.last_name
-        initial_data['affliction'] = patient.affliction
-        initial_data['doctor'] = patient.doctor
+        initial_data['affliction'] = patient.affliction.all()
+        initial_data['doctor'] = patient.doctor.all()
         return initial_data
 
 
