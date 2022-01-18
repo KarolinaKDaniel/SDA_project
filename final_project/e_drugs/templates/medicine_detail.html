@@ -9,15 +9,26 @@
 <img src="{% if medicine.image %}{{ medicine.image.url }}{% else %}{{ '../../static/no-image.png' }}{% endif %}"
      width="200" height="200" alt="a picture of the drug">
 
-<h2>Price: {{ medicine.price_net }} zł</h2>
-<hr>
-<p>Form: {{ medicine.form }}</p>
-<p>Manufacturer: {{ medicine.manufacturer }}</p>
-<h2>{% if medicine.need_prescription %}
-    Needs prescription!
+    <h2>Price: {{ medicine.price_net }} zł</h2>
+    <hr>
+    <h4>Form: {{ medicine.form }}</h4>
+    <h4>Manufacturer: {{ medicine.manufacturer }}</h4>
+    <h2>{% if medicine.need_prescription %}
+        Needs prescription!
+        {% else %}
+        Don't need prescription!
+        {% endif %}
+    </h2>
+    {% if medicine_instance_count %}
+        <form action="{% url 'cart:cart_add' medicine.id %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="Add to cart">
+        </form>
     {% else %}
-    Don't need prescription!
-    {% endif %}</h2>
+        <p>Product is not available</p>
+    {% endif %}
 <a class="btn btn-primary" href="{% url 'med-update' pk=medicine.id %}">Update medicine</a>
 <a class="btn btn-danger" href="{% url 'med-delete' pk=medicine.id %}">Delete medicine</a>
+{% endblock %}
 {% endblock %}
