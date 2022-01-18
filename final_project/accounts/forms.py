@@ -22,6 +22,7 @@ class PatientUpdateForm(UserChangeForm):
                                           blank=True, required=False)
     doctor = ModelMultipleChoiceField(queryset=Doctor.objects.all(), widget=MultipleHiddenInput, required=False, blank=True)
 
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
