@@ -4,9 +4,9 @@ from django.template.loader import get_template
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from .models import Patient, MyUser, Doctor
+from .models import Patient, MyUser, Doctor, Pharmacist
 from e_drugs.models import Affliction
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.transaction import atomic
 from .tokens import account_activation_token
 
@@ -71,6 +71,8 @@ class PatientRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         self.instance.is_active = False
         user = super().save(commit)
+        group = Group.objects.all().filter(name='patient')
+        user.groups.set(group)
         address = self.cleaned_data['address']
         phone = self.cleaned_data['phone']
         Personal_ID = self.cleaned_data['Personal_ID']
@@ -116,6 +118,8 @@ class PharmacistCreationForm(UserCreationForm):
     def save(self, commit=True):
         self.instance.is_active = True
         user = super().save(commit)
+        group = Group.objects.all().filter(name='pharmacist')
+        user.groups.set(group)
         address = self.cleaned_data['address']
         phone = self.cleaned_data['phone']
         Personal_ID = self.cleaned_data['Personal_ID']
@@ -149,6 +153,8 @@ class DoctorCreationForm(UserCreationForm):
     def save(self, commit=True):
         self.instance.is_active = True
         user = super().save(commit)
+        group = Group.objects.all().filter(name='doctor')
+        user.groups.set(group)
         address = self.cleaned_data['address']
         phone = self.cleaned_data['phone']
         Personal_ID = self.cleaned_data['Personal_ID']

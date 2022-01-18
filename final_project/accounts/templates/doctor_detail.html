@@ -9,7 +9,7 @@
     <h3>Dr {{ doctor }}</h3>
     <hr>
     <p>Specialization: {{ doctor.specialization }}</p>
-    <p>Email: {{ doctor.my_user.email }}</p>
+    <p>Email: {{ doctor.my_user.base_user.email }}</p>
     <p>Phone number: {{ doctor.my_user.phone }}</p>
 </center>
 {% endblock %}
