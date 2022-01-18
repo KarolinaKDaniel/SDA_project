@@ -18,7 +18,7 @@ from .models import Patient, Doctor, User, MyUser
 
 class PatientUpdateView(UpdateView):
     template_name = 'patient_form.html'
-    model = User
+    model = Patient
     form_class = PatientUpdateForm
     success_url = reverse_lazy('index')
 
