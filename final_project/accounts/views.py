@@ -2,8 +2,8 @@ from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, View
-from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, View, UpdateView
+from .forms import PatientRegistrationForm, DoctorCreationForm, PharmacistCreationForm, PatientUpdateForm
 from django.shortcuts import redirect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
@@ -15,6 +15,29 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .models import Patient, Doctor, User, MyUser
+
+
+class PatientUpdateView(UpdateView):
+    template_name = 'patient_form.html'
+    model = Patient
+    form_class = PatientUpdateForm
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=None):
+        my_user_pk = Patient.objects.get(pk=self.kwargs.get('pk')).my_user.pk
+        base_user_pk = MyUser.objects.get(pk = my_user_pk).base_user.pk
+        user = User.objects.get(pk = base_user_pk)
+        return user
+
+    def get_initial(self):
+        initial_data = super().get_initial()
+        patient = Patient.objects.get(pk=self.kwargs.get('pk'))
+        initial_data['address'] = patient.my_user.address
+        initial_data['phone'] = patient.my_user.phone
+        initial_data['personal_ID'] = patient.my_user.Personal_ID
+        initial_data['affliction'] = patient.affliction.all()
+        initial_data['doctor'] = patient.doctor.all()
+        return initial_data
 
 
 class ActivateAccount(View):
