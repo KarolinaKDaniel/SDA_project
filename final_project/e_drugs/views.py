@@ -163,10 +163,9 @@ class OrderCreateView(CreateView):
 
     def get_initial(self):
         initial = super(OrderCreateView, self).get_initial()
-        # patient = Patient.objects.get(my_user=self.request.user.id)
-        # print(patient.first_name)
+        patient = MyUser.objects.get(id=self.request.user.id-1)
         if self.request.user.is_authenticated:
-            initial.update({'patient': self.request.user.id})
+            initial.update({'patient': patient.patient.id})
         return initial
 
 
