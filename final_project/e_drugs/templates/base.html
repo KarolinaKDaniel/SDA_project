@@ -72,11 +72,13 @@
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
             <div class="dropdown-menu">
-
-                <a class="dropdown-item" href="{% url 'patient-detail' pk=patient.my_user.base_user.id %}">Profile</a>
+                {% for patient in patient_users %}
+                {% if patient.my_user.base_user.id == user.id %}
+                <a class="dropdown-item" href="{% url 'patient-detail' pk=patient.id %}">Profile</a>
+                {% endif %}
+                {% endfor %}
 
                 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="dropdown-item" href="#">Profile</a>
                 <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
                     Prescriptions</a>
                 {% endif %}
