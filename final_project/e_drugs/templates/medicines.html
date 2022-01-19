@@ -6,33 +6,40 @@ Medicines
 {% endblock %}
 
 {% block content %}
-<h1>Medicines</h1>
+
+<div class="header-h">
+    <h1>Medicines</h1>
+</div>
 
 <form class="d-flex" method=POST action="{% url 'search-medicine' %}">
     {% csrf_token %}
     <div class="col-xs-2">
-        <input class="form-control me-2" type="search" placeholder="Active substance" aria-label="Search"
+        <input class="form-control me-2" type="search" placeholder="Market name | Active substance" aria-label="Search"
                name="searched">
     </div>
     <button class="btn btn-outline-success" type="submit">
         Search
     </button>
 </form>
-<a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=name">name</a>
-<a class="btn btn-secondary" href="{% url 'medicines-all' %}?s=price_net">price</a>
-{% if searched or medicines %}
+
+
+<a class="btn btn-info" href="{% url 'medicines-all' %}?s=name">name</a>
+<a class="btn btn-info" href="{% url 'medicines-all' %}?s=price_net">price</a>
+{% if medicines or searched %}
 <ul class="list-group list-group-flush">
     {% for med in medicines %}
     <li class="list-group-item"><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
-        <i>{{ med.substance.name }} - {{ med.dose }}</i>
+        <p id="italic-p">{{ med.substance.name }} - {{ med.dose }}</p>
+        <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="150"
+             height="150" alt="a picture of the drug">
+        <p>
+            <b> Price: </b>{{ med.price_net|floatformat:.2 }} zł
+        </p>
     </li>
-    <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="200" height="200" alt="a picture of the drug">
-    <p>
-        <b> Price: </b>{{ med.price_net }} zł
-    </p>
     {% empty %}
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>
     {% endfor %}
 </ul>
+{% include "pagination.html" with page=medicines %}
 {% endif %}
 {% endblock %}

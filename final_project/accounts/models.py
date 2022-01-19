@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField
+from django.db.models import CharField, Model, CASCADE, ImageField, OneToOneField, ManyToManyField, BooleanField
 from e_drugs.models import Affliction
 
 class MyUser(Model):
@@ -7,8 +7,14 @@ class MyUser(Model):
     address = CharField(max_length=256)
     phone = CharField(max_length=20)
     Personal_ID = CharField(max_length=20)
+    email_confirmed = BooleanField(default=False)
+    reset_password = BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.base_user.last_name} {self.base_user.first_name}'
 
     class Meta:
+        ordering = ['base_user__last_name', 'base_user__first_name']
         permissions = [
             ("is_doctor", "Can do logged in doctor tasks"),
             ("is_pharmacist", "Can do logged in pharmacists tasks"),
@@ -25,7 +31,7 @@ class Doctor(Model):
         return f'{self.my_user.base_user.last_name} {self.my_user.base_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__base_user__last_name']
+        ordering = ['my_user__base_user__last_name', 'my_user__base_user__first_name']
 
 
 class Patient(Model):
@@ -37,7 +43,7 @@ class Patient(Model):
         return f'{self.my_user.base_user.last_name} {self.my_user.base_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__base_user__last_name']
+        ordering = ['my_user__base_user__last_name', 'my_user__base_user__first_name']
 
 
 class Pharmacist(Model):
@@ -48,4 +54,4 @@ class Pharmacist(Model):
         return f'{self.my_user.base_user.last_name} {self.my_user.base_user.first_name}'
 
     class Meta:
-        ordering = ['my_user__base_user__last_name']
+        ordering = ['my_user__base_user__last_name', 'my_user__base_user__first_name']
