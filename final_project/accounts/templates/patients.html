@@ -11,9 +11,9 @@ Patients
         {% for patient in patients %}
         <li>
             {% if perms.accounts.view_patient %}
-                {{ patient.my_user.first_name }} {{ patient.my_user.last_name }} <a href="{% url 'patient-detail' patient.my_user.id %}">{{ patient.my_user.Personal_ID }}</a>
+                {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} <a href="{% url 'patient-detail' patient.my_user.id %}">{{ patient.my_user.Personal_ID }}</a>
             {% else %}
-                {{ patient.my_user.first_name }} {{ patient.my_user.last_name }} {{ patient.my_user.Personal_ID }}
+                {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} {{ patient.my_user.Personal_ID }}
             {% endif %}
         </li>
         {% endfor %}

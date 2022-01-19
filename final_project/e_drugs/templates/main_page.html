@@ -44,6 +44,7 @@
         {% if doctors %}
         <ul class="list-group" id="row-doc">
             {% for doc in doctors %}
+            {% if forloop.counter < 5 %}
             <li class="list-group-item">
                 <div>
                     <div>
@@ -59,6 +60,7 @@
                     </div>
                 </div>
             </li>
+            {% endif %}
             {% endfor %}
         </ul>
         {% endif %}

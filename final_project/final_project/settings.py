@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'e_drugs',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +147,8 @@ LOGGING = {
         },
     },
 }
+
+CART_SESSION_ID = 'cart'
 
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

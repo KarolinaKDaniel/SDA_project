@@ -10,9 +10,11 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm, OrderForm
 from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
+
+from cart.forms import CartAddProductForm
 
 LOGGER = getLogger(__name__)
 
@@ -63,6 +65,18 @@ class MedicineDetailView(DetailView):
     model = Medicine
     context_object_name = 'medicine'
 
+    def get_context_data(self, **kwargs):
+        context = super(MedicineDetailView, self).get_context_data(**kwargs)
+        cart_product_form = CartAddProductForm()
+
+        medicine_instance_count = MedicineInstance.objects.filter(medicine=self.kwargs.get('pk')).count()
+        cart_product_form.fields['quantity'].choices = [(i, str(i)) for i in range(1, medicine_instance_count+1)]
+
+        context['cart_product_form'] = cart_product_form
+        context['medicine_instance_count'] = medicine_instance_count
+
+        return context
+
 
 class MedicineUpdateView(UpdateView):
     model = Medicine
@@ -86,10 +100,8 @@ class PrescriptionDetailView(DetailView):
         context = super(PrescriptionDetailView, self).get_context_data(**kwargs)
         prescription = Prescription.objects.get(id=self.kwargs['pk'])
 
-        patient_id = Patient.objects.get(id=prescription.patient.id)
-        patient = MyUser.objects.get(username=patient_id.my_user)
-        context['patient'] = f'{patient.first_name} {patient.last_name}'
-        context['patient_id'] = int(patient_id.id)
+        patient = Patient.objects.get(id=prescription.patient.id)
+        context['patient'] = patient
 
         valid = prescription.created + datetime.timedelta(days=prescription.valid)
         context['filtered'] = valid
@@ -140,6 +152,19 @@ class PrescribedByUserListView(ListView):
 
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
         return context
+
+
+class OrderCreateView(CreateView):
+    form_class = OrderForm
+    success_url = reverse_lazy("index")
+    template_name = 'order_form.html'
+
+    def get_initial(self):
+        initial = super(OrderCreateView, self).get_initial()
+        patient = MyUser.objects.get(id=self.request.user.id-1)
+        if self.request.user.is_authenticated:
+            initial.update({'patient': patient.patient.id})
+        return initial
 
 
 class PrescriptionCreateView(CreateView):

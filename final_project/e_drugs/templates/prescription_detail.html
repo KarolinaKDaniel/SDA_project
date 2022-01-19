@@ -7,9 +7,9 @@
 <h1>{{ patient }}</h1>
 
 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-<h6>
-    <a href="{% url 'prescription-list' valid=True pk=2 %}">All prescriptions of {{ patient }}</a>
-</h6>
+<h2>
+    <a  href="{% url 'prescription-list' valid=True pk=2 %}">All prescriptions of {{ patient }}</a>
+</h2>
 {% endif %}
 
 {% if filtered|date:"YmdHis" > now|date:"YmdHis" %}
@@ -24,7 +24,7 @@
 
 <hr>
 
-<h3>medicine:</h3>
+<h2>medicine:</h2>
 <ul>
     {% for area in prescription.medicine.all %}
     <li>
@@ -35,7 +35,7 @@
 <p>comment: {{ prescription.comment }}</p>
 <hr>
 
-<h3>was used: {{ prescription.is_used }}</h3>
+<h2>was used: {{ prescription.is_used }}</h2>
 <p>Prescribed by: {{ prescription.prescribed_by }}</p>
 
 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}

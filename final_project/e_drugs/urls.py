@@ -4,7 +4,7 @@ from .views import medicines, MedicineDetailView, search_medicine, PrescriptionD
     SideEffectCreateView, SideEffectDetailView, SideEffectUpdateView, SideEffectDeleteView, MedicineCreateView, \
     MedicineUpdateView, MedicineDeteleView, main_page, CurrentOrdersListView, ArchivalOrdersListView, \
     OrdersByStateListView, OrderDetailView, MedicineInstanceCreateView, MedicineInstanceUpdateView, \
-    MedicineInstanceDeleteView
+    MedicineInstanceDeleteView, OrderCreateView
 
 urlpatterns = [
     path('', main_page, name='index'),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('side-effect-update/<int:pk>', SideEffectUpdateView.as_view(), name='side-effect-update'),
     path('side-effect-delete/<int:pk>', SideEffectDeleteView.as_view(), name='side-effect-delete'),
 
+    path('order-create', OrderCreateView.as_view(), name='order-create'),
     path('current-orders-list/<int:pk>/<str:state>', CurrentOrdersListView.as_view(), name='current-orders'),
     path('archival-orders-list/<int:pk>', ArchivalOrdersListView.as_view(), name='archival-orders'),
     path('orders-list/<str:state>', OrdersByStateListView.as_view(), name='orders-list'),

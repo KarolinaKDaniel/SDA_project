@@ -14,12 +14,12 @@ h1, p {
     color: #00CC99;
 }
 
-h2 {
+h2, h2 a{
  font-weight: 600;
  color: green;
 }
 
-h3, li{
+h3, li {
     color: #008080;
 }
 
@@ -28,7 +28,7 @@ li, .colo {
     color: #008080;
     }
 
-li a:hover {
+li a:hover, h2 a:hover {
     color: aqua;
     text-decoration: none;
     }
@@ -75,12 +75,17 @@ section {
     font-weight: bold;
 }
 
-.pagination a, li a {
-    color: aqua;
+.pagination a , li a {
     text-decoration: none;
     font-size: 25px;
     font-weight: 600;
     }
+
+
+li a {
+    color: aqua;
+}
+
 
 .header-h {
     text-align: center;
@@ -102,6 +107,23 @@ section {
     align-items: center;
     height: 70px;
     }
+
+.cart-style {
+   background: #008080;
+   color: #fff;
+   font-weight: 600;
+   text-align: center;
+}
+
+.cart-table {
+   width: 100%;
+   border-spacing: 0;
+   border-collapse: collapse;
+}
+
+.center {
+    text-align: center;
+}
 
 #italic-p  {
   display: flex;
