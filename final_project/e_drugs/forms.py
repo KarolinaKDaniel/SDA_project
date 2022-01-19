@@ -1,6 +1,6 @@
 from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
-from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField, HiddenInput
+from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField, HiddenInput, MultipleHiddenInput
 
 from .models import Medicine, Prescription, SideEffect, Substance, Order
 
@@ -40,6 +40,12 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = '__all__'
+        widgets = {
+            'patient': HiddenInput,
+            'state': HiddenInput,
+            'discount': HiddenInput,
+            'medicine_instance': MultipleHiddenInput
+            }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

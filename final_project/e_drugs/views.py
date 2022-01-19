@@ -15,6 +15,7 @@ from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 from cart.forms import CartAddProductForm
+from cart.cart import Cart
 
 LOGGER = getLogger(__name__)
 
@@ -155,15 +156,25 @@ class PrescribedByUserListView(ListView):
 
 
 class OrderCreateView(CreateView):
+    initial = {'state': 'accepted'}
     form_class = OrderForm
     success_url = reverse_lazy("index")
     template_name = 'order_form.html'
 
     def get_initial(self):
         initial = super(OrderCreateView, self).get_initial()
-        patient = MyUser.objects.get(id=self.request.user.id-1)
         if self.request.user.is_authenticated:
-            initial.update({'patient': patient.patient.id})
+            patient = Patient.objects.get(my_user__base_user__id=self.request.user.id)
+            initial.update({'patient': patient.id})
+
+            cart = Cart(self.request)
+            all_ids = []
+            for item in cart:
+                medicine_instance = MedicineInstance.objects.all().filter(medicine=item['medicine'].id)[0:item['quantity']]
+                for medicine in medicine_instance:
+                    all_ids.append(medicine.id)
+            initial.update({'medicine_instance': all_ids})
+
         return initial
 
 
