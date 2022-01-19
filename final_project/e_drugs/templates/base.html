@@ -49,12 +49,17 @@
                         </a>
                     </li>
                     {% endif %}
+                    <li>
+                        <a class="nav-item nav-link active" href="{% url 'side-effect-create' %}">
+                            Create Side Effect
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
         <div>
             <form class="d-flex">
-                <button class="btn btn-outline-success" id="btn-cart" type="submit">Cart</button>
+                <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-success" id="btn-cart" type="submit">Cart</a>
             </form>
         </div>
 

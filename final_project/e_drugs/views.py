@@ -100,10 +100,8 @@ class PrescriptionDetailView(DetailView):
         context = super(PrescriptionDetailView, self).get_context_data(**kwargs)
         prescription = Prescription.objects.get(id=self.kwargs['pk'])
 
-        patient_id = Patient.objects.get(id=prescription.patient.id)
-        patient = MyUser.objects.get(username=patient_id.my_user)
-        context['patient'] = f'{patient.first_name} {patient.last_name}'
-        context['patient_id'] = int(patient_id.id)
+        patient = Patient.objects.get(id=prescription.patient.id)
+        context['patient'] = patient
 
         valid = prescription.created + datetime.timedelta(days=prescription.valid)
         context['filtered'] = valid

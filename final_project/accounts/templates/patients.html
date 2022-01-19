@@ -10,7 +10,7 @@ Patients
     <ul>
         {% for patient in patients %}
         <li>
-            {{ patient.my_user.first_name }} {{ patient.my_user.last_name }} {{ patient.my_user.Personal_ID }}
+            {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} - {{ patient.my_user.Personal_ID }}
         </li>
         {% endfor %}
     </ul>
