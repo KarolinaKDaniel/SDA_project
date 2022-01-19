@@ -155,15 +155,16 @@ class PrescribedByUserListView(ListView):
 
 
 class OrderCreateView(CreateView):
+    initial = {'state': 'shipped', 'medicine_instance': 1}
     form_class = OrderForm
     success_url = reverse_lazy("index")
     template_name = 'order_form.html'
 
     def get_initial(self):
         initial = super(OrderCreateView, self).get_initial()
-        patient = MyUser.objects.get(id=self.request.user.id-1)
         if self.request.user.is_authenticated:
-            initial.update({'patient': patient.patient.id})
+            patient = Patient.objects.get(my_user__base_user__id=self.request.user.id)
+            initial.update({'patient': patient.id})
         return initial
 
 

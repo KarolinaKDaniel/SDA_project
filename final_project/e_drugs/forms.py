@@ -40,6 +40,11 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order
         fields = '__all__'
+        widgets = {
+            'patient': HiddenInput,
+            'state': HiddenInput,
+            'discount': HiddenInput
+            }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
