@@ -57,11 +57,11 @@
 </table>
 
 <p class="text-right">
-    <a class="btn btn-info" href="{% url 'medicines-all' %}" >Continue shopping</a>
+    <a href="{% url 'medicines-all' %}" class="button light">Continue shopping</a>
     {% if user.is_authenticated %}
-        <a class="btn btn-info" href="#">Checkout</a>
+        <a href="{% url 'order-create' %}" class="button">Checkout</a>
     {% else %}
-        <a class="btn btn-info" href="#" >Login</a>
+        <a href="{% url 'login' %}" class="button">Login</a>
     {% endif %}
 </p>
 {% endblock %}
