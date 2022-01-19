@@ -2,7 +2,7 @@ from django.forms.widgets import NumberInput
 from .models import Medicine, Prescription, SideEffect, MedicineInstance
 from django.forms import ModelForm, NumberInput, Select, DecimalField, IntegerField, HiddenInput
 
-from .models import Medicine, Prescription, SideEffect, Substance
+from .models import Medicine, Prescription, SideEffect, Substance, Order
 
 
 class MedicineForm(ModelForm):
@@ -29,6 +29,17 @@ class PrescriptionForm(ModelForm):
         fields = '__all__'
         exclude = ['is_used']
         widgets = {'prescribed_by': HiddenInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class OrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
