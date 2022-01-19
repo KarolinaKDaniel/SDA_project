@@ -84,7 +84,7 @@ class PatientCreateView(CreateView):
     success_url = reverse_lazy('patients')
 
 
-class PatientDeleteView(CreateView):
+class PatientDeleteView(DeleteView):
     template_name = 'patient_delete.html'
     model = Patient
     success_url = reverse_lazy('patients')
