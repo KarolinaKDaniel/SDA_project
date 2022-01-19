@@ -11,8 +11,8 @@
 
     <h2>Price: {{ medicine.price_net }} zł</h2>
     <hr>
-    <h4>Form: {{ medicine.form }}</h4>
-    <h4>Manufacturer: {{ medicine.manufacturer }}</h4>
+    <h3>Form: {{ medicine.form }}</h3>
+    <h3>Manufacturer: {{ medicine.manufacturer }}</h3>
     <h2>{% if medicine.need_prescription %}
         Needs prescription!
         {% else %}
@@ -23,12 +23,11 @@
         <form action="{% url 'cart:cart_add' medicine.id %}" method="post">
             {{ cart_product_form }}
             {% csrf_token %}
-            <input type="submit" value="Add to cart">
+            <input class="btn btn-info" type="submit" value="Add to cart">
         </form>
     {% else %}
         <p>Product is not available</p>
     {% endif %}
 <a class="btn btn-primary" href="{% url 'med-update' pk=medicine.id %}">Update medicine</a>
 <a class="btn btn-danger" href="{% url 'med-delete' pk=medicine.id %}">Delete medicine</a>
-{% endblock %}
 {% endblock %}

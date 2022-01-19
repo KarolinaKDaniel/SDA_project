@@ -25,22 +25,32 @@ Medicines
 
 <a class="btn btn-info" href="{% url 'medicines-all' %}?s=name">name</a>
 <a class="btn btn-info" href="{% url 'medicines-all' %}?s=price_net">price</a>
+<a class="btn btn-primary" href="{% url 'med-create' %}">New medicine</a>
+
 {% if medicines or searched %}
 <ul class="list-group list-group-flush">
     {% for med in medicines %}
-    <li class="list-group-item"><b><a href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a></b>
-        <p id="italic-p">{{ med.substance.name }} - {{ med.dose }}</p>
-        <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}" width="150"
-             height="150" alt="a picture of the drug">
-        <p>
-            <b> Price: </b>{{ med.price_net|floatformat:.2 }} zł
-        </p>
+    <li class="list-group-item">
+        <div class="media">
+            <div class="media-left">
+                <img src="{% if med.image %}{{ med.image.url }}{% else %}{{ '/static/no-image.png' }}{% endif %}"
+                     class="align-self-center mr-3"
+                     width="150"
+                     height="150" alt="a picture of the drug">
+            </div>
+            <div class="media-body">
+                <a class="media-heading" href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a>
+                <p id="italic-p">{{ med.substance.name }} - {{ med.dose }}</p>
+
+                <h2>
+                    Price: {{ med.price_net|floatformat:.2 }} zł
+                </h2>
+            </div>
     </li>
     {% empty %}
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>
     {% endfor %}
 </ul>
 {% include "pagination.html" with page=medicines %}
-<a class="btn btn-primary" href="{% url 'med-create' %}">New medicine</a>
 {% endif %}
 {% endblock %}

@@ -12,4 +12,6 @@ Side Effect detail
 <hr>
 <h3>Description for side effect:</h3>
 <p>{{ side_effect.what_effect }}</p>
+<a class="btn btn-primary" href="{% url 'side-effect-update' side_effect.id %}">Update</a>
+<a class="btn btn-danger" href="{% url 'side-effect-delete' side_effect.id %}">Delete</a>
 {% endblock %}
