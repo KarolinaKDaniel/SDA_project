@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm
+from .forms import MedicineForm, PrescriptionForm, SideEffectForm, MedicineInstanceForm, OrderForm
 from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
@@ -152,6 +152,19 @@ class PrescribedByUserListView(ListView):
 
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
         return context
+
+
+class OrderCreateView(CreateView):
+    form_class = OrderForm
+    success_url = reverse_lazy("index")
+    template_name = 'order_form.html'
+
+    def get_initial(self):
+        initial = super(OrderCreateView, self).get_initial()
+        patient = MyUser.objects.get(id=self.request.user.id-1)
+        if self.request.user.is_authenticated:
+            initial.update({'patient': patient.patient.id})
+        return initial
 
 
 class PrescriptionCreateView(CreateView):
