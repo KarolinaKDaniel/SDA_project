@@ -42,6 +42,7 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
                     <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
+                    <li><a class="dropdown-item" href="{% url 'patients' %}">Patients</a></li>
                     {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
                     <li>
                         <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
@@ -66,6 +67,8 @@
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
             <div class="dropdown-menu">
+
+                <a class="dropdown-item" href="{% url 'patient-detail' pk=patient.my_user.base_user.id %}">Profile</a>
 
                 {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
                 <a class="dropdown-item" href="#">Profile</a>

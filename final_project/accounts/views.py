@@ -22,6 +22,7 @@ class PatientUpdateView(UpdateView):
     model = Patient
     form_class = PatientUpdateForm
     success_url = reverse_lazy('index')
+    # permission_required = 'accounts.change_patient'
 
     def get_object(self, queryset=None):
         my_user_pk = Patient.objects.get(pk=self.kwargs.get('pk')).my_user.pk

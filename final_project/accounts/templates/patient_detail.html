@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block content %}
-<h1>{{ patient.my_user.first_name }} {{ patient.my_user.last_name }}</h1>
-<p>Personal ID: {{ patient.my_user.Personal_ID }}</p>
-<p>Email: {{ patient.my_user.email }}</p>
-<p>Address: {{ patient.my_user.address }}</p>
-<p>Phone: {{ patient.my_user.phone }}</p>
-Afflictions:
-<ul>
-    {% for affliction in patient.affliction.all %}
-    <li> {{ affliction.name }}</li>
-    {% endfor %}
-</ul>
+    <h1>{{ patient.my_user.first_name }} {{ patient.my_user.last_name }}</h1>
+    <p>Personal ID: {{ patient.my_user.Personal_ID }}</p>
+    <p>Email: {{ patient.my_user.email }}</p>
+    <p>Address: {{ patient.my_user.address }}</p>
+    <p>Phone: {{ patient.my_user.phone }}</p>
+    <p>Afflictions:</p>
+    <ul>
+        {% for affliction in patient.affliction.all %}
+        <li> {{ affliction.name }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
