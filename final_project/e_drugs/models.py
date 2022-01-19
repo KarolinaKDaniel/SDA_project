@@ -86,6 +86,7 @@ class MedicineInstance(Model):
     medicine = ForeignKey(Medicine, on_delete=DO_NOTHING)
     expire_date = DateField()
     code = CharField(max_length=64)
+    is_ordered = BooleanField(default=False)
 
     def __str__(self):
         return self.medicine.name
@@ -143,6 +144,7 @@ class Prescription(Model):
 
     def __str__(self):
         return f'{self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}: {self.created}'
+
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
