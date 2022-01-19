@@ -142,7 +142,7 @@ class Prescription(Model):
     comment = TextField()
 
     def __str__(self):
-        return f'{self.patient.my_user.base_user.first_name} {self.patient.base_user.my_user.last_name}: {self.created}'
+        return f'{self.patient.my_user.base_user.first_name} {self.patient.my_user.base_user.last_name}: {self.created}'
 
 class SideEffect(Model):
     patient = ForeignKey('accounts.Patient', on_delete=DO_NOTHING)
