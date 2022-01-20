@@ -21,6 +21,7 @@ class PatientUpdateView(UpdateView):
     model = Patient
     form_class = PatientUpdateForm
     success_url = reverse_lazy('index')
+    # permission_required = 'accounts.change_patient'
 
     def get_object(self, queryset=None):
         my_user_pk = Patient.objects.get(pk=self.kwargs.get('pk')).my_user.pk
@@ -83,7 +84,7 @@ class PatientCreateView(CreateView):
     success_url = reverse_lazy('patients')
 
 
-class PatientDeleteView(CreateView):
+class PatientDeleteView(DeleteView):
     template_name = 'patient_delete.html'
     model = Patient
     success_url = reverse_lazy('patients')
@@ -123,5 +124,6 @@ class PatientDetailView(DetailView):
     model = Patient
     template_name = 'patient_detail.html'
     context_object_name = 'patient'
+    permission_required = 'accounts.view_patient'
 
 # Create your views here.

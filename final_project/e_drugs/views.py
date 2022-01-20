@@ -15,6 +15,7 @@ from .models import Prescription, Medicine, SideEffect, Order, MedicineInstance
 from accounts.models import Doctor, MyUser, Patient, Pharmacist
 
 from cart.forms import CartAddProductForm
+from cart.cart import Cart
 
 LOGGER = getLogger(__name__)
 
@@ -54,6 +55,7 @@ def search_medicine(request):
                       context={"searched": searched,
                                "medicines": medicines})
 
+
 class MedicineCreateView(CreateView):
     form_class = MedicineForm
     template_name = 'medicine_form.html'
@@ -69,7 +71,7 @@ class MedicineDetailView(DetailView):
         context = super(MedicineDetailView, self).get_context_data(**kwargs)
         cart_product_form = CartAddProductForm()
 
-        medicine_instance_count = MedicineInstance.objects.filter(medicine=self.kwargs.get('pk')).count()
+        medicine_instance_count = MedicineInstance.objects.filter(medicine=self.kwargs.get('pk'),is_ordered=False).count()
         cart_product_form.fields['quantity'].choices = [(i, str(i)) for i in range(1, medicine_instance_count+1)]
 
         context['cart_product_form'] = cart_product_form
@@ -155,15 +157,37 @@ class PrescribedByUserListView(ListView):
 
 
 class OrderCreateView(CreateView):
+    initial = {'state': 'accepted'}
     form_class = OrderForm
     success_url = reverse_lazy("index")
     template_name = 'order_form.html'
+
+    def form_valid(self, form):
+        if form.save(self):
+            cart = Cart(self.request)
+            for item in cart:
+                medicine_instance = MedicineInstance.objects.all().filter(is_ordered=False, medicine=item['medicine'].id)[0:item['quantity']]
+                for medicine in medicine_instance:
+                    MedicineInstance.objects.filter(id=medicine.id).update(is_ordered=True)
+            cart.clear()
+            return super(OrderCreateView, self).form_valid(form)
+        else:
+            return self
 
     def get_initial(self):
         initial = super(OrderCreateView, self).get_initial()
         if self.request.user.is_authenticated:
             patient = Patient.objects.get(my_user__base_user__id=self.request.user.id)
             initial.update({'patient': patient.id})
+
+            cart = Cart(self.request)
+            all_ids = []
+            for item in cart:
+                medicine_instance = MedicineInstance.objects.all().filter(is_ordered=False, medicine=item['medicine'].id)[0:item['quantity']]
+                for medicine in medicine_instance:
+                    all_ids.append(medicine.id)
+            initial.update({'medicine_instance': all_ids})
+
         return initial
 
 

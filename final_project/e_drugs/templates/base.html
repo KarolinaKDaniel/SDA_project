@@ -1,4 +1,5 @@
 {% load static %}
+{% load template_utils %}
 
 <html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}" {% endif %}>
 
@@ -42,9 +43,9 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <li><a class="dropdown-item" href="{% url 'medicines-all' %}">Medicines</a></li>
                     <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
+                    {% if request.user|has_group:"pharmacist" or request.user|has_group:"doctor" %}
                     <li><a class="dropdown-item" href="{% url 'patients' %}">Patients</a></li>
-                    {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                    <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                   <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
                         Prescriptions</a>
                     <li>
                         <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
@@ -52,11 +53,13 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if request.user|has_group:"patient" %}
                     <li>
                         <a class="nav-item nav-link active" href="{% url 'side-effect-create' %}">
                             Create Side Effect
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -75,9 +78,16 @@
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
             <div class="dropdown-menu">
-
-                {% if perms.accounts.is_pharmacist or perms.accounts.is_doctor %}
-                <a class="dropdown-item" href="#">Profile</a>
+                {% if request.user|has_group:"patient" %}
+                {% for patient in patient_users %}
+                {% if patient.my_user.base_user.id == user.id %}
+                <a class="dropdown-item" href="{% url 'patient-detail' pk=patient.id %}">Profile</a>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% if request.user|has_group:"doctor" %}
+                <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                    Prescriptions</a>
                 {% endif %}
 
                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
