@@ -138,7 +138,7 @@ class PrescribedByUserListView(ListView):
         context = super(PrescribedByUserListView, self).get_context_data(**kwargs)
         pk = self.kwargs['pk']
         try:
-            user = MyUser.objects.get(id=pk)
+            user = MyUser.objects.get(base_user__id=pk)
         except:
             return context
 
