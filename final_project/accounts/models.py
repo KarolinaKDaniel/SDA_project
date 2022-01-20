@@ -15,10 +15,6 @@ class MyUser(Model):
 
     class Meta:
         ordering = ['base_user__last_name', 'base_user__first_name']
-        permissions = [
-            ("is_doctor", "Can do logged in doctor tasks"),
-            ("is_pharmacist", "Can do logged in pharmacists tasks"),
-        ]
 
 
 class Doctor(Model):

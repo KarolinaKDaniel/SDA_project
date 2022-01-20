@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load template_utils %}
 
 {% block content %}
 <h1>{{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }}</h1>
@@ -7,12 +8,14 @@
 <p>Email: {{ patient.my_user.base_user.email }}</p>
 <p>Address: {{ patient.my_user.address }}</p>
 <p>Phone: {{ patient.my_user.phone }}</p>
+{% if request.user|has_group:"patient" or request.user|has_group:"doctor" %}
 <h3>Afflictions:</h3>
 <ul>
     {% for affliction in patient.affliction.all %}
     <li> {{ affliction.name }}</li>
     {% endfor %}
 </ul>
+{% endif %}
 <a class="btn btn-primary" href="{% url 'patient-update' patient.id %}">Update patient</a>
 <a class="btn btn-danger" href="{% url 'patient-delete' patient.id %}">Delete patient</a>
 {% endblock %}
