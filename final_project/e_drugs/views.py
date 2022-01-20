@@ -138,7 +138,7 @@ class PrescribedByUserListView(ListView):
         context = super(PrescribedByUserListView, self).get_context_data(**kwargs)
         pk = self.kwargs['pk']
         try:
-            user = MyUser.objects.get(id=pk)
+            user = MyUser.objects.get(base_user__id=pk)
         except:
             return context
 
@@ -151,7 +151,6 @@ class PrescribedByUserListView(ListView):
                 context['profession'] = pharmacist
             except:
                 context['profession'] = None
-
         context['prescriptions'] = Prescription.objects.filter(prescribed_by=user)
         return context
 
@@ -199,7 +198,11 @@ class PrescriptionCreateView(CreateView):
     def get_initial(self):
         initial = super(PrescriptionCreateView, self).get_initial()
         if self.request.user.is_authenticated:
-            initial.update({'prescribed_by': self.request.user.id})
+            try:
+                creator = Pharmacist.objects.get(my_user__base_user__id=self.request.user.id)
+            except:
+                creator = Doctor.objects.get(my_user__base_user__id=self.request.user.id)
+            initial.update({'prescribed_by': creator})
         return initial
 
 

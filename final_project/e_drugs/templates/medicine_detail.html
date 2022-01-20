@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load template_utils %}
 
 {% block content %}
 
@@ -29,6 +30,8 @@
 {% else %}
 <p>Product is not available</p>
 {% endif %}
+{% if request.user|has_group:"pharmacist" %}
 <a class="btn btn-primary" href="{% url 'med-update' pk=medicine.id %}">Update medicine</a>
 <a class="btn btn-danger" href="{% url 'med-delete' pk=medicine.id %}">Delete medicine</a>
+{% endif %}
 {% endblock %}
