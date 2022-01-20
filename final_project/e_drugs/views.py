@@ -44,7 +44,6 @@ def medicines(request):
     return render(request, template_name='medicines.html', context={'medicines': meds,
                                                                     'page': page})
 
-
 def search_medicine(request):
     if request.method == "POST":
         searched = request.POST['searched']

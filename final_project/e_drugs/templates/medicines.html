@@ -40,12 +40,13 @@ Medicines
             </div>
             <div class="media-body">
                 <a class="media-heading" href="{% url 'medicine-detail' med.id %}">{{ med.name }}</a>
-                <p id="italic-p">{{ med.substance.name }} - {{ med.dose }}</p>
+                <p id="italic-p">{{ med.substance.name }} - {{ med.dose }} mg</p>
 
                 <h2>
                     Price: {{ med.price_net|floatformat:.2 }} zł
                 </h2>
             </div>
+        </div>
     </li>
     {% empty %}
     <h3>Sorry, I can't find medicine with {{ searched }}</h3>

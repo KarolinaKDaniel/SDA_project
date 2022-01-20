@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-  <form method="post">
+  <form method="post" >
     {% csrf_token %}
-    <table>{{ form }}</table>
+    <table class="colo">{{ form }}</table>
     <input type="submit" value="Submit" class="btn btn-primary">
   </form>
 {% endblock %}

@@ -1,21 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
+{% load template_utils %}
 
 {% block title %}
 Patients
 {% endblock %}
 
 {% block content %}
+<div class="header-h">
     <h1>Patients</h1>
+</div>
     <ul>
         {% for patient in patients %}
         <li>
-            {% if perms.accounts.view_patient %}
+            {% if request.user|has_group:"doctor" or if request.user|has_group:"pharmacist" %}
                 {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} <a href="{% url 'patient-detail' patient.my_user.id %}">{{ patient.my_user.Personal_ID }}</a>
             {% else %}
-                {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} {{ patient.my_user.Personal_ID }}
+                {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }}
             {% endif %}
         </li>
         {% endfor %}
     </ul>
+    {% if request.user|has_group:"pharmacist" %}
+   <a class="btn btn-primary" href="{% url 'patient-create' %}">Add patient</a>
+    {% endif %}
 {% endblock %}

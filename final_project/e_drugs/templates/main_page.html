@@ -21,8 +21,7 @@
 
                 <!--            {% endfor %}-->
                 <span id="italic-p">
-                     <p>{{ med.substance }}</p>
-                     <p>{{ med.dose }}</p>
+                     <p>{{ med.substance }} - {{ med.dose }} mg</p>
                 </span>
                 <img width="100"
                      height="100"
@@ -45,7 +44,7 @@
         <ul class="list-group" id="row-doc">
             {% for doc in doctors %}
             {% if forloop.counter < 5 %}
-            <li class="list-group-item">
+            <li class="list-group-item magic">
                 <div>
                     <div>
                         <img src="{% if doc.photo %}{{ doc.photo.url }}{% else %}{{ '../static/no-image.png' }}{% endif %}"

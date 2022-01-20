@@ -45,6 +45,8 @@
                     <li><a class="dropdown-item" href="{% url 'doctors-all' %}">Doctors</a></li>
                     {% if request.user|has_group:"pharmacist" or request.user|has_group:"doctor" %}
                     <li><a class="dropdown-item" href="{% url 'patients' %}">Patients</a></li>
+                   <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
+                        Prescriptions</a>
                     <li>
                         <a class="nav-item nav-link active" href="{% url 'prescription-create' %}">
                             Create Prescription
@@ -63,7 +65,8 @@
         </div>
         <div>
             <form class="d-flex">
-                <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-success" id="btn-cart" type="submit">Cart</a>
+                <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-success" id="btn-cart"
+                   type="submit">Cart</a>
             </form>
         </div>
 
@@ -75,14 +78,12 @@
                 {% else %}Hello, {{ user.username }}!{% endif %}
             </a>
             <div class="dropdown-menu">
+                {% if request.user|has_group:"patient" %}
                 {% for patient in patient_users %}
                 {% if patient.my_user.base_user.id == user.id %}
                 <a class="dropdown-item" href="{% url 'patient-detail' pk=patient.id %}">Profile</a>
                 {% endif %}
                 {% endfor %}
-
-                {% if request.user|has_group:"patient" %}
-                <a class="dropdown-item" href="#">Profile</a>
                 {% endif %}
                 {% if request.user|has_group:"doctor" %}
                 <a class="dropdown-item" href="{% url 'prescription-list-by-doctor' pk=user.id %}">All
