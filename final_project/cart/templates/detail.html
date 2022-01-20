@@ -57,7 +57,7 @@
 </table>
 
 <p class="text-right">
-    <a href="{% url 'medicines-all' %}" class="button light">Continue shopping</a>
+    <a href="{% url 'medicines-all' %}" class="btn btn-info">Continue shopping</a>
     {% if user.is_authenticated %}
         <a href="{% url 'order-create' %}" class="btn btn-info">Checkout</a>
     {% else %}

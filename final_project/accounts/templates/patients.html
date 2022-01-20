@@ -6,12 +6,15 @@ Patients
 {% endblock %}
 
 {% block content %}
+<div class="header-h">
     <h1>Patients</h1>
+</div>
     <ul>
         {% for patient in patients %}
         <li>
-            {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} - {{ patient.my_user.Personal_ID }}
+            {{ patient.my_user.base_user.first_name }} {{ patient.my_user.base_user.last_name }} - <a href="{% url 'patient-detail' patient.id %}"> {{ patient.my_user.Personal_ID }}</a>
         </li>
         {% endfor %}
     </ul>
+   <a class="btn btn-primary" href="{% url 'patient-create' %}">Add patient</a>
 {% endblock %}

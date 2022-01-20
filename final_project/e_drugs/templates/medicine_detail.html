@@ -4,30 +4,31 @@
 {% block content %}
 
 <h1>{{ medicine.name }}</h1>
-<p id="italic-p">{{ medicine.substance.name }} - {{ medicine.dose }}</p>
+<p id="italic-p">{{ medicine.substance.name }} - {{ medicine.dose }} mg</p>
 
 <img src="{% if medicine.image %}{{ medicine.image.url }}{% else %}{{ '../../static/no-image.png' }}{% endif %}"
      width="200" height="200" alt="a picture of the drug">
 
-    <h2>Price: {{ medicine.price_net }} zł</h2>
-    <hr>
-    <h3>Form: {{ medicine.form }}</h3>
-    <h3>Manufacturer: {{ medicine.manufacturer }}</h3>
-    <h2>{% if medicine.need_prescription %}
-        Needs prescription!
-        {% else %}
-        Don't need prescription!
-        {% endif %}
-    </h2>
-    {% if medicine_instance_count %}
-        <form action="{% url 'cart:cart_add' medicine.id %}" method="post">
-            {{ cart_product_form }}
-            {% csrf_token %}
-            <input class="btn btn-info" type="submit" value="Add to cart">
-        </form>
+<h2>Price: {{ medicine.price_net }} zł</h2>
+<hr>
+<h3>Form: {{ medicine.form }}</h3>
+<h3>Manufacturer: {{ medicine.manufacturer }}</h3>
+<h2>{% if medicine.need_prescription %}
+    Needs prescription!
     {% else %}
-        <p>Product is not available</p>
+    Don't need prescription!
     {% endif %}
+</h2>
+{% if medicine_instance_count %}
+<form class="colo"  action="{% url 'cart:cart_add' medicine.id %}" method="post">
+    {% csrf_token %}
+    {{ cart_product_form }}
+    <input class="btn btn-info" type="submit" value="Add to cart">
+</form>
+<a href="{% url 'medicine-instance-create' %}" class="btn btn-primary">Add items</a>
+{% else %}
+<p>Product is not available</p>
+{% endif %}
 <a class="btn btn-primary" href="{% url 'med-update' pk=medicine.id %}">Update medicine</a>
 <a class="btn btn-danger" href="{% url 'med-delete' pk=medicine.id %}">Delete medicine</a>
 {% endblock %}
