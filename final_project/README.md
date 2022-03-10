@@ -12,6 +12,7 @@ The Pharmacy System consists in handling three accounts (doctor, patient and pha
 The System helps us with shopping and choosing medicines the best for us and it helps doctors and pharmacists make easy to issue prescriptions, also pharmacist can control stock status.
 The Project is the result of 280 hours intensive learning on bootcamp training at [the Softwere Development Academy](https://sdacademy.pl). 
 Created by: 
+- Łukasz Okoń (trainer)
 - Karolina Daniel
 - Patrycja Szwaba
 - Rafał Kalawski
